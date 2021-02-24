@@ -1,6 +1,5 @@
 import ProfileDetails from "./ProfileDetails";
 import ProfileTweets from "./ProfileTweets";
-import ProfileStats from "./ProfileStats";
 import ProfileFollowing from "./ProfileFollowing";
 import React, {Component} from 'react';
 import {withStyles } from '@material-ui/core';
@@ -21,7 +20,6 @@ class ProfilePage extends Component {
         return <div id="profilePage" className={classes.profilePage}>
             <ProfileDetails></ProfileDetails>
             <ProfileTweets></ProfileTweets>
-            <ProfileStats></ProfileStats>
             <ProfileFollowing></ProfileFollowing>
         </div>
     }
