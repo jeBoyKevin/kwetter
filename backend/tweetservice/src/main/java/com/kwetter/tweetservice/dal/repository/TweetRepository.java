@@ -1,16 +1,35 @@
 package com.kwetter.tweetservice.dal.repository;
 
-import com.kwetter.tweetservice.dal.context.TweetLocalContext;
+import com.kwetter.tweetservice.dal.context.TweetDatabaseContext;
 import com.kwetter.tweetservice.dal.interfaces.AbstractTweetContext;
+import com.kwetter.tweetservice.models.returnModels.SendTweetReturnModel;
 
+import org.springframework.stereotype.Repository;
+
+@Repository
 public class TweetRepository {
     private static AbstractTweetContext tweetContext;
 
     public TweetRepository() {
-        this.tweetContext = new TweetLocalContext();
+        this.tweetContext = new TweetDatabaseContext();
     }
 
-    public boolean tweet() {
-        return tweetContext.tweet();
+    public SendTweetReturnModel sendTweet(int user_id, String message) {
+        return tweetContext.sendTweet(user_id, message);
     }
+
+    public String getMentions() {
+        return tweetContext.getMentions();
+    }
+
+    public String deleteTweet() {
+        return tweetContext.deleteTweet();
+    }
+    public String likeTweet() {
+        return tweetContext.likeTweet();
+    }
+    public String getTweets() {
+        return tweetContext.getTweets();
+    }
+
 }
