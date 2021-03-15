@@ -17,7 +17,7 @@ public class TweetDatabaseContext extends AbstractTweetContext {
         Properties props = new Properties();
         FileInputStream in = null;
         try {
-            in = new FileInputStream("db.properties");
+            in = new FileInputStream("./db.properties");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
