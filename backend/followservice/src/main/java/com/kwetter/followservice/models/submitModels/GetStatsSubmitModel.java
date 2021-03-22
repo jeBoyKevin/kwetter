@@ -1,9 +1,7 @@
 package com.kwetter.followservice.models.submitModels;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+public class GetStatsSubmitModel {
 
-public class GetFollowersSubmitModel {
-    @JsonProperty
     private int user_id;
 
     public int getUser_id() {

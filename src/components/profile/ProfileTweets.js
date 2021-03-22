@@ -1,6 +1,7 @@
 import {TableBody, withStyles, Table, TableCell, TableRow} from '@material-ui/core';
 import React, {Component} from 'react';
 import ProfileStats from './ProfileStats';
+import axios from 'axios';
 
 const useStyles = (theme) => ({
     tweet: {
@@ -59,27 +60,28 @@ class ProfileTweets extends Component {
                 id: 3, text: "Test Tweet 3", date: "13 hours ago"
             },
         ],
-        followers: [
-            {
-                id: 1, name: "follower1"
-            },
-            {
-                id: 2, name: "follower2"
-            },
-            {
-                id: 3, name: "follower3"
-            },
-            {
-                id: 4, name: "follower4"
-            },
-            {
-                id: 5, name: "follower5"
-            },
-        ]
+        followers: [],
+        isloaded: false
+    }
+
+    async componentDidMount() {
+        const response = await axios({
+            method: 'get',
+            url: `http://localhost:8081/follow/follower/${this.props.id}`
+        })
+        
+        if (response.data.success === true) {
+            this.setState ({
+                followers: response.data.followers,
+                isLoaded: true
+            });
+        }
+        else {
+            console.log(response.data.errorMessage);
+        }
     }
     
     parentMethod() {
-        console.log('Hey')
         if (document.getElementById('uiTable').style.display !== "none"){
             document.getElementById('uiTable').style.display = "none"
             document.getElementById('followerTable').style.display = "table"
@@ -92,10 +94,14 @@ class ProfileTweets extends Component {
     }
 
     render() {
+
+        if (!this.state.isLoaded) {
+            return null;
+        }
         const { classes } = this.props;
         
         return  <div className={classes.wrapperDiv}>
-            <ProfileStats parentMethod={this.parentMethod}/>
+            <ProfileStats id={this.props.id} parentMethod={this.parentMethod}/>
             <div className={classes.profileTweets}>
             <Table id="uiTable" className={classes.table}>
             
@@ -118,9 +124,9 @@ class ProfileTweets extends Component {
                 <TableBody>
                 {this.state.followers.map((follower, index) =>
 
-                <TableRow className={classes.tweet}  key={follower.id} style ={ index % 2? { background : "#e8e8e8" }:{ background : "white" }}>
+                <TableRow className={classes.tweet}  key={follower} style ={ index % 2? { background : "#e8e8e8" }:{ background : "white" }}>
                     <TableCell className={classes.tweetCell}>
-                        <p className={classes.tweetText}>{follower.name}</p>
+                        <p className={classes.tweetText}>{follower}</p>
                     </TableCell>
                 </TableRow>
                 )}

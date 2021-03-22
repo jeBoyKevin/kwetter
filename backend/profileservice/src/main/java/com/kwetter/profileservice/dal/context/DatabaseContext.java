@@ -62,7 +62,7 @@ public class DatabaseContext extends AbstractContext {
             stmt.setInt(1, user_id);
 
             ResultSet rs = stmt.executeQuery();
-            if (rs.next()){
+            if (rs.next()) {
                 returnModel.setBio(rs.getString("bio"));
                 returnModel.setLocation(rs.getString("location"));
                 returnModel.setPicture(rs.getString("picture"));

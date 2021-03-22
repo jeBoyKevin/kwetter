@@ -1,6 +1,7 @@
 package com.kwetter.followservice.manager;
 
 import com.kwetter.followservice.dal.repository.FollowRepository;
+import com.kwetter.followservice.models.returnModels.GetStatsReturnModel;
 import com.kwetter.followservice.models.returnModels.SendFollowReturnModel;
 import com.kwetter.followservice.models.returnModels.GetFollowedReturnModel;
 import com.kwetter.followservice.models.returnModels.GetFollowersReturnModel;
@@ -20,4 +21,6 @@ public class FollowManager {
     public GetFollowedReturnModel getFollowed(int user_id) {
         return tweetRepo.getFollowed(user_id);
     }
+
+    public GetStatsReturnModel getStats(int user_id) {return tweetRepo.getStats(user_id);}
 }

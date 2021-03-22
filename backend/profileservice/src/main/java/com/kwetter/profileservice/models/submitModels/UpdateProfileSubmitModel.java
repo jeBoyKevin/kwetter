@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class UpdateProfileSubmitModel {
 
     @JsonProperty
-    private int user_id;
+    private int  user_id;
 
     @JsonProperty
     private String location;

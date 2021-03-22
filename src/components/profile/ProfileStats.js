@@ -1,5 +1,6 @@
 import {withStyles } from '@material-ui/core';
 import React, {Component} from 'react';
+import axios from 'axios';
 
 const useStyles = (theme) => ({
     profileStats: {
@@ -26,9 +27,28 @@ class ProfileStats extends Component {
         this.handleClick = this.handleClick.bind(this)
     }
     state = {
-        following: "47",
-        followers: "123",
-        tweets: "6347"
+        following: "0",
+        followers: "0",
+        tweets: "0",
+        isLoaded: false
+    }
+
+    async componentDidMount() {
+        const response = await axios({
+            method: 'get',
+            url: `http://localhost:8081/follow/stats/${this.props.id}`
+        })
+        
+        if (response.data.success === true) {
+            this.setState ({
+                following: response.data.followed,
+                followers: response.data.followers,
+                isLoaded: true
+            });
+        }
+        else {
+            console.log(response.data.errorMessage);
+        }
     }
 
     handleClick() {
@@ -36,6 +56,9 @@ class ProfileStats extends Component {
     }
 
     render() {
+        if (!this.state.isLoaded) {
+            return null;
+        }
         const { classes } = this.props;
         return <div id ="profileStats" className={classes.profileStats}>
             <p>{this.state.following} following</p>

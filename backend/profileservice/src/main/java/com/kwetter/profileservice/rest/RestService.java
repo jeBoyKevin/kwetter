@@ -13,10 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.ws.rs.PathParam;
 
 @RestController
 public class RestService {
@@ -60,9 +59,7 @@ public class RestService {
         String location = submitModel.getLocation();
         String website = submitModel.getWebsite();
 
-        if (user_id == 0 || bio.isEmpty() || location.isEmpty() || website.isEmpty()) {
-            return new ResponseEntity<>("", HttpStatus.BAD_REQUEST);
-        }
+
 
         UpdateProfileReturnModel returnModel = manager.updateProfile(user_id, bio, location, website);
 
@@ -74,11 +71,8 @@ public class RestService {
         }
     }
 
-    @RequestMapping(value =  "/profile", method = RequestMethod.GET)
-    public ResponseEntity getProfile(@RequestBody String json) throws JsonProcessingException {
-        GetProfileSubmitModel submitModel = objectMapper.readValue(json, GetProfileSubmitModel.class);
-
-        int user_id = submitModel.getUser_id();
+    @RequestMapping(value =  "/profile/{user_id}", method = RequestMethod.GET)
+    public ResponseEntity getProfile(@PathVariable("user_id") int user_id) throws JsonProcessingException {
 
         if (user_id == 0) {
             return new ResponseEntity<>("", HttpStatus.BAD_REQUEST);

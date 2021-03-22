@@ -18,9 +18,9 @@ class ProfilePage extends Component {
     render() {
         const { classes } = this.props;
         return <div id="profilePage" className={classes.profilePage}>
-            <ProfileDetails></ProfileDetails>
-            <ProfileTweets></ProfileTweets>
-            <ProfileFollowing></ProfileFollowing>
+            <ProfileDetails id={this.props.match.params.id}></ProfileDetails>
+            <ProfileTweets id={this.props.match.params.id}></ProfileTweets>
+            <ProfileFollowing id={this.props.match.params.id}></ProfileFollowing>
         </div>
     }
 }

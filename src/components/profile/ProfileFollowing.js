@@ -1,5 +1,6 @@
 import {TableBody, withStyles, Table, TableCell, TableRow} from '@material-ui/core';
 import React, {Component} from 'react';
+import axios from 'axios';
 
 
 const useStyles = (theme) => ({
@@ -30,27 +31,30 @@ const useStyles = (theme) => ({
 class ProfileFollowing extends Component {
 
     state = {
-        following: [
-            {username: "petertje"},
-            {username: "petertje2"},
-            {username: "petertje3"},
-            {username: "petertje4"},
-            {username: "petertje5"},
-            {username: "petertje6"},
-            {username: "petertje7"},
-            {username: "petertje8"},
-            {username: "petertje9"},
-            {username: "petertje10"},
-            {username: "petertje11"},
-            {username: "petertje12"},
-            {username: "petertje13"},
-            {username: "petertje14"},
-            {username: "petertje15"},
-            {username: "petertje16"},
-        ]
+        following: [],
+        isloaded: false
     }
 
+    async componentDidMount() {
+        const response = await axios({
+            method: 'get',
+            url: `http://localhost:8081/follow/followed/${this.props.id}`
+        })
+        
+        if (response.data.success === true) {
+            this.setState ({
+                following: response.data.followed,
+                isloaded: true
+            });
+        }
+        else {
+            console.log(response.data.errorMessage);
+        }
+    }
     render() {
+        if (!this.state.isloaded) {
+            return null;
+        }
         const { classes } = this.props;
         return <div className={classes.profileFollowing}>
             <Table className={classes.table}>
@@ -58,9 +62,9 @@ class ProfileFollowing extends Component {
             <TableBody>
             {this.state.following.map((follow, index) =>
     
-            <TableRow className={classes.tweet}  key={follow.username} style ={ ((index > 3 && index < 8) || (index > 11 && index < 16)) ? { background : "#e8e8e8" }:{ background : "white" }}>
+            <TableRow className={classes.tweet}  key={follow} style ={ ((index > 3 && index < 8) || (index > 11 && index < 16)) ? { background : "#e8e8e8" }:{ background : "white" }}>
                 <TableCell className={classes.tweetCell}>
-                    <p className={classes.link}>{follow.username}</p>
+                    <p className={classes.link}>{follow}</p>
                 </TableCell>
             </TableRow>
             

@@ -2,6 +2,7 @@ package com.kwetter.followservice.dal.repository;
 
 import com.kwetter.followservice.dal.context.FollowDatabaseContext;
 import com.kwetter.followservice.dal.interfaces.AbstractFollowContext;
+import com.kwetter.followservice.models.returnModels.GetStatsReturnModel;
 import com.kwetter.followservice.models.returnModels.SendFollowReturnModel;
 
 import com.kwetter.followservice.models.returnModels.GetFollowedReturnModel;
@@ -27,6 +28,8 @@ public class FollowRepository {
     public GetFollowedReturnModel getFollowed(int user_id) {
         return tweetContext.getFollowed(user_id);
     }
+
+    public GetStatsReturnModel getStats(int user_id) { return tweetContext.getStats(user_id);}
 
 
 }

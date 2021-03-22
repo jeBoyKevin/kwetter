@@ -1,6 +1,7 @@
 package com.kwetter.followservice.dal.context;
 
 import com.kwetter.followservice.dal.interfaces.AbstractFollowContext;
+import com.kwetter.followservice.models.returnModels.GetStatsReturnModel;
 import com.kwetter.followservice.models.returnModels.SendFollowReturnModel;
 import com.kwetter.followservice.models.returnModels.GetFollowedReturnModel;
 import com.kwetter.followservice.models.returnModels.GetFollowersReturnModel;
@@ -111,6 +112,38 @@ public class FollowDatabaseContext extends AbstractFollowContext {
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
                 returnModel.addFollowed(rs.getInt("followed_user_id"));
+            }
+
+            con.close();
+            returnModel.setSuccess(true);
+        } catch (SQLException e) {
+            returnModel.setErrorMessage(e.getMessage());
+            returnModel.setSuccess(false);
+        }
+        return returnModel;
+    }
+
+    @Override
+    public GetStatsReturnModel getStats(int user_id) {
+        GetStatsReturnModel returnModel = new GetStatsReturnModel();
+        try {
+            if (con == null || con.isClosed()) {
+                prepareDatabase();
+            }
+            PreparedStatement stmt = con.prepareStatement("SELECT COUNT(user_id) as 'followed' from follow where `followed_user_id` = ?");
+            stmt.setInt(1, user_id);
+
+            PreparedStatement stmt2 = con.prepareStatement("SELECT COUNT(user_id) as 'followers' from follow where `user_id` = ?");
+            stmt2.setInt(1, user_id);
+
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                returnModel.setFollowed(rs.getInt("followed"));
+            }
+
+            ResultSet rs2 = stmt2.executeQuery();
+            if (rs2.next()) {
+                returnModel.setFollowers(rs2.getInt("followers"));
             }
 
             con.close();
