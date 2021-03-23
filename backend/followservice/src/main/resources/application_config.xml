@@ -7,6 +7,8 @@
 
     <bean id="TweetManager" class="com.kwetter.followservice.manager.FollowManager">
     </bean>
+    <bean id="WebConfig" class="WebConfig">
 
+    </bean>
 
 </beans>

@@ -7,6 +7,8 @@
 
     <bean id="ProfileManager" class="com.kwetter.profileservice.manager.Manager">
     </bean>
+    <bean id="WebConfig" class="WebConfig">
 
+    </bean>
 
 </beans>
