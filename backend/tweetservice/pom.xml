@@ -4,12 +4,21 @@
 <distributionManagement>
 
     <repository>
-        <id>internal.repo</id>
-        <name>Internal repo</name>
-        <url>file:///home/thara/testesb/in</url>
+        <id>TweetServiceBuild</id>
+        <url>https://pkgs.dev.azure.com/382763/Kwetter/_packaging/TweetServiceBuild/maven/v1</url>
     </repository>
 </distributionManagement>
     <repositories>
+        <repository>
+            <id>TweetServiceBuild</id>
+            <url>https://pkgs.dev.azure.com/382763/Kwetter/_packaging/TweetServiceBuild/maven/v1</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
         <repository>
             <id>spring-milestones</id>
             <name>Spring Milestones</name>
