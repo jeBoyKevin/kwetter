@@ -25,7 +25,7 @@ public class RestService {
 
     private ObjectMapper objectMapper = new ObjectMapper();
 
-    @RequestMapping(value =  "/profile/picture",
+    @RequestMapping(value =  "/picture",
                     method = RequestMethod.POST,
                     consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity uploadPicture(@RequestBody String json) throws JsonProcessingException {
@@ -48,7 +48,7 @@ public class RestService {
 
     }
 
-    @RequestMapping(value =  "/profile",
+    @RequestMapping(value =  "",
                     method = RequestMethod.PUT,
                     consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity updateProfile(@RequestBody String json) throws JsonProcessingException {
@@ -71,7 +71,7 @@ public class RestService {
         }
     }
 
-    @RequestMapping(value =  "/profile/{user_id}", method = RequestMethod.GET)
+    @RequestMapping(value =  "/{user_id}", method = RequestMethod.GET)
     public ResponseEntity getProfile(@PathVariable("user_id") int user_id) throws JsonProcessingException {
 
         if (user_id == 0) {
@@ -87,7 +87,7 @@ public class RestService {
         }
     }
 
-    @RequestMapping(value =  "/profile/follow",
+    @RequestMapping(value =  "/follow",
                     method = RequestMethod.POST,
                     consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity followProfile() throws JsonProcessingException {

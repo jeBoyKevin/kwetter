@@ -29,7 +29,7 @@ public class FollowRestService {
 
     private ObjectMapper objectMapper = new ObjectMapper();
 
-    @RequestMapping(value =  "/follow",
+    @RequestMapping(value =  "",
                     method = RequestMethod.POST,
                     consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity followUser(@RequestBody String json) throws JsonProcessingException {
@@ -53,7 +53,7 @@ public class FollowRestService {
         }
     }
 
-    @RequestMapping(value =  "/follow/follower/{user_id}", method = RequestMethod.GET)
+    @RequestMapping(value =  "/{user_id}", method = RequestMethod.GET)
     public ResponseEntity getFollowers(@PathVariable("user_id") int user_id) throws JsonProcessingException {
         if (user_id == 0) {
             return new ResponseEntity<>("", HttpStatus.BAD_REQUEST);
@@ -69,7 +69,7 @@ public class FollowRestService {
         }
     }
 
-    @RequestMapping(value =  "/follow/followed/{user_id}", method = RequestMethod.GET)
+    @RequestMapping(value =  "/followed/{user_id}", method = RequestMethod.GET)
     public ResponseEntity getFollowed(@PathVariable("user_id") int user_id) throws JsonProcessingException {
         if (user_id == 0) {
             return new ResponseEntity<>("", HttpStatus.BAD_REQUEST);
@@ -85,7 +85,7 @@ public class FollowRestService {
         }
     }
 
-    @RequestMapping(value =  "/follow/stats/{user_id}", method = RequestMethod.GET)
+    @RequestMapping(value =  "/stats/{user_id}", method = RequestMethod.GET)
     public ResponseEntity getStats(@PathVariable("user_id") int user_id) throws JsonProcessingException {
         if (user_id == 0) {
             return new ResponseEntity<>("", HttpStatus.BAD_REQUEST);

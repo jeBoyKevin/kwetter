@@ -24,7 +24,7 @@ public class TweetRestService {
 
     private ObjectMapper objectMapper = new ObjectMapper();
 
-    @RequestMapping(value =  "/tweet",
+    @RequestMapping(value =  "",
                     method = RequestMethod.POST,
                     consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity sendTweet(@RequestBody String json) throws JsonProcessingException {
@@ -43,25 +43,25 @@ public class TweetRestService {
         }
     }
 
-    @RequestMapping(value =  "/tweet", method = RequestMethod.GET)
+    @RequestMapping(value =  "", method = RequestMethod.GET)
     public ResponseEntity getTweets() throws JsonProcessingException {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(objectMapper.writeValueAsString(manager.getTweets()));
     }
 
-    @RequestMapping(value =  "/tweet", method = RequestMethod.DELETE)
+    @RequestMapping(value =  "", method = RequestMethod.DELETE)
     public ResponseEntity deleteTweet() throws JsonProcessingException {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(objectMapper.writeValueAsString(manager.deleteTweet()));
     }
 
-    @RequestMapping(value =  "/tweet/like", method = RequestMethod.POST)
+    @RequestMapping(value =  "/like", method = RequestMethod.POST)
     public ResponseEntity likeTweet() throws JsonProcessingException {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(objectMapper.writeValueAsString(manager.likeTweet()));
     }
 
-    @RequestMapping(value =  "/tweet/mentions", method = RequestMethod.GET)
+    @RequestMapping(value =  "/mentions", method = RequestMethod.GET)
     public ResponseEntity getMentions() throws JsonProcessingException {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(objectMapper.writeValueAsString(manager.getMentions()));
