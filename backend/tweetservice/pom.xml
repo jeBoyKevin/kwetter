@@ -29,7 +29,7 @@
             <name>Spring Snapshots</name>
             <url>https://repo.spring.io/snapshot</url>
             <snapshots>
-                <enabled>true</enabled>k
+                <enabled>true</enabled>
             </snapshots>
         </repository>
     </repositories>
