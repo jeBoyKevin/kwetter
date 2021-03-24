@@ -4,12 +4,21 @@
 <distributionManagement>
 
     <repository>
-        <id>internal.repo</id>
-        <name>Internal repo</name>
-        <url>file:///home/thara/testesb/in</url>
+        <id>FollowServiceBuild</id>
+        <url>https://pkgs.dev.azure.com/382763/Kwetter/_packaging/FollowServiceBuild/maven/v1</url>
     </repository>
 </distributionManagement>
     <repositories>
+        <repository>
+            <id>FollowServiceBuild</id>
+            <url>https://pkgs.dev.azure.com/382763/Kwetter/_packaging/FollowServiceBuild/maven/v1</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
         <repository>
             <id>spring-milestones</id>
             <name>Spring Milestones</name>
@@ -32,7 +41,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.kwetter</groupId>
-    <artifactId>tweetservice</artifactId>
+    <artifactId>followservice</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>followservice</name>
     <description>Tweet servcie for Kwetter</description>
