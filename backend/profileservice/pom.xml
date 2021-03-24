@@ -13,6 +13,24 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>demo</name>
     <description>Demo project for Spring Boot</description>
+    <distributionManagement>
+        <repository>
+            <id>ProfileServiceBuild</id>
+            <url>https://pkgs.dev.azure.com/382763/Kwetter/_packaging/ProfileServiceBuild/maven/v1</url>
+        </repository>
+    </distributionManagement>
+    <repositories>
+        <repository>
+            <id>ProfileServiceBuild</id>
+            <url>https://pkgs.dev.azure.com/382763/Kwetter/_packaging/ProfileServiceBuild/maven/v1</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
