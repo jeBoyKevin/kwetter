@@ -4,14 +4,14 @@
 <distributionManagement>
 
     <repository>
-        <id>TweetServiceBuild</id>
-        <url>https://pkgs.dev.azure.com/382763/Kwetter/_packaging/TweetServiceBuild/maven/v1</url>
+        <id>FollowServiceBuild</id>
+        <url>https://pkgs.dev.azure.com/382763/Kwetter/_packaging/FollowServiceBuild/maven/v1</url>
     </repository>
 </distributionManagement>
     <repositories>
         <repository>
-            <id>TweetServiceBuild</id>
-            <url>https://pkgs.dev.azure.com/382763/Kwetter/_packaging/TweetServiceBuild/maven/v1</url>
+            <id>FollowServiceBuild</id>
+            <url>https://pkgs.dev.azure.com/382763/Kwetter/_packaging/FollowServiceBuild/maven/v1</url>
             <releases>
                 <enabled>true</enabled>
             </releases>
@@ -41,7 +41,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.kwetter</groupId>
-    <artifactId>tweetservice</artifactId>
+    <artifactId>followservice</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>followservice</name>
     <description>Tweet servcie for Kwetter</description>
