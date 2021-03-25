@@ -5,7 +5,7 @@
     http://www.springframework.org/schema/beans/spring-beans-4.3.xsd">
 
 
-    <bean id="ProfileManager" class="com.kwetter.profileservice.manager.Manager">
+    <bean id="AccountManager" class="com.kwetter.accountservice.manager.AccountManager">
     </bean>
     <bean id="WebConfig" class="WebConfig">
 

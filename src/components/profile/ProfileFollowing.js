@@ -38,7 +38,7 @@ class ProfileFollowing extends Component {
     async componentDidMount() {
         const response = await axios({
             method: 'get',
-            url: `http://localhost:8081/follow/followed/${this.props.id}`
+            url: `http://localhost:8079/follow/followed/${this.props.id}`
         })
         
         if (response.data.success === true) {

@@ -1,13 +1,13 @@
-package com.kwetter.profileservice;
+package com.kwetter.accountservice;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class ProfileserviceApplicationTests {
+class AccountserviceApplicationTests {
 
-    @Test
-    void contextLoads() {
-    }
+	@Test
+	void contextLoads() {
+	}
 
 }

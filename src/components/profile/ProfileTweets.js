@@ -67,7 +67,7 @@ class ProfileTweets extends Component {
     async componentDidMount() {
         const response = await axios({
             method: 'get',
-            url: `http://localhost:8081/follow/follower/${this.props.id}`
+            url: `http://localhost:8079/follow/follower/${this.props.id}`
         })
         
         if (response.data.success === true) {

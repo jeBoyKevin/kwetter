@@ -67,7 +67,7 @@ class ProfileDetails extends Component {
     async componentDidMount() {
         const response = await axios({
             method: 'get',
-            url: `http://localhost:8080/profile/${this.props.id}`
+            url: `http://localhost:8079/profile/${this.props.id}`
         })
         
         if (response.data.success === true) {
@@ -92,7 +92,7 @@ class ProfileDetails extends Component {
     async changeProfile() {
         await axios({
             method: 'PUT',
-            url: `http://localhost:8080/profile/`,
+            url: `http://localhost:8079/profile/`,
             data: {
                 user_id: this.props.id,
                 website: this.state.website,

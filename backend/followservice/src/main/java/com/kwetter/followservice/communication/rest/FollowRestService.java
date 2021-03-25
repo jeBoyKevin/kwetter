@@ -53,7 +53,7 @@ public class FollowRestService {
         }
     }
 
-    @RequestMapping(value =  "/{user_id}", method = RequestMethod.GET)
+    @RequestMapping(value =  "/follower/{user_id}", method = RequestMethod.GET)
     public ResponseEntity getFollowers(@PathVariable("user_id") int user_id) throws JsonProcessingException {
         if (user_id == 0) {
             return new ResponseEntity<>("", HttpStatus.BAD_REQUEST);
