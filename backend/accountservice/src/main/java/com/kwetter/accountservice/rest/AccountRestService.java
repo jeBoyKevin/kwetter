@@ -21,7 +21,7 @@ public class AccountRestService {
                     method = RequestMethod.POST,
                     consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity followUser(@RequestBody String json) throws JsonProcessingException {
-
+        return null;
     }
 
 
