@@ -8,6 +8,25 @@
 		<version>2.4.4</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
+	<distributionManagement>
+
+		<repository>
+			<id>AccountServiceBuild</id>
+			<url>https://pkgs.dev.azure.com/382763/Kwetter/_packaging/AccountServiceBuild/maven/v1</url>
+		</repository>
+	</distributionManagement>
+	<repositories>
+		<repository>
+			<id>AccountServiceBuild</id>
+			<url>https://pkgs.dev.azure.com/382763/Kwetter/_packaging/AccountServiceBuild/maven/v1</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
 	<groupId>com.kwetter</groupId>
 	<artifactId>accountservice</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
