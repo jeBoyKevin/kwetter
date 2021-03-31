@@ -1,6 +1,7 @@
 package com.kwetter.accountservice.dal.context;
 
 import com.kwetter.accountservice.dal.interfaces.AbstractAccountContext;
+import com.kwetter.accountservice.models.returnModels.AccountReturnModel;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -50,4 +51,63 @@ public class AccountDatabaseContext extends AbstractAccountContext {
     }
 
 
+    @Override
+    public AccountReturnModel register(String username, String password) {
+        AccountReturnModel returnModel = new AccountReturnModel();
+
+        try {
+            if (con == null || con.isClosed()) {
+                prepareDatabase();
+            }
+            PreparedStatement stmt = con.prepareStatement("INSERT INTO `user` (`username`, `password`) VALUES (?,?)", 1);
+            stmt.setString(1, username);
+            stmt.setString(2, password);
+
+            stmt.executeUpdate();
+
+            try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    returnModel.setId(Math.toIntExact(generatedKeys.getLong(1)));
+                    returnModel.setSuccess(true);
+                }
+                else {
+                    returnModel.setSuccess(false);
+                    returnModel.setError("Creating user failed, no ID obtained.");
+                }
+            }
+        } catch (SQLException e) {
+            returnModel.setError(e.getMessage());
+            returnModel.setSuccess(false);
+        }
+        return returnModel;
+    }
+
+    @Override
+    public AccountReturnModel login(String username, String password) {
+        AccountReturnModel returnModel = new AccountReturnModel();
+
+        try {
+            if (con == null || con.isClosed()) {
+                prepareDatabase();
+            }
+            PreparedStatement stmt = con.prepareStatement("SELECT * from `user` WHERE `username` = ? AND `password` = ?");
+            stmt.setString(1, username);
+            stmt.setString(2, password);
+
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                returnModel.setSuccess(true);
+                returnModel.setId(rs.getInt("id"));
+            }
+            else {
+                returnModel.setError("Username or Password is invalid");
+                returnModel.setSuccess(false);
+            }
+        } catch (SQLException e) {
+            returnModel.setError(e.getMessage());
+            returnModel.setSuccess(false);
+        }
+        return returnModel;
+    }
 }

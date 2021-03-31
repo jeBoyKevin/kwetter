@@ -1,11 +1,13 @@
 import './App.css';
-import ProfilePage from "./components/profile/ProfilePage"
+import ProfilePage from "./components/profile/ProfilePage";
+import LoginForm from "./components/auth/loginForm";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 
 function App() {
 
   return (
     <div className="app">
+      <LoginForm></LoginForm>
       <Router>
         <Route path="/profile/:id" component={ProfilePage}></Route>
       </Router>

@@ -43,7 +43,7 @@ public class FollowRestService {
           return new ResponseEntity<>("", HttpStatus.BAD_REQUEST);
         }
 
-        SendFollowReturnModel returnModel = manager.followUser(submitModel.getUser_id(), submitModel.getFollowed_user_id());
+        SendFollowReturnModel returnModel = manager.followUser(user_id, followed_user_id);
 
         if (returnModel.isSuccess()) {
             return ResponseEntity.status(HttpStatus.OK).body(objectMapper.writeValueAsString(returnModel));
