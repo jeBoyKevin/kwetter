@@ -14,60 +14,24 @@ import java.util.Properties;
 
 public class FollowDatabaseContext extends AbstractFollowContext {
 
-    private Connection con;
+    private final String connectionUrl = "jdbc:sqlserver://kwetter.database.windows.net:1433;DatabaseName=follow;user=kevints@kwetter;password=k98p&ewgt^64!wk2;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;";
 
-    private void prepareDatabase() {
-        Properties props = new Properties();
-        FileInputStream in = null;
-        try {
-            in = new FileInputStream("./db.properties");
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        try {
-            props.load(in);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
-            in.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        String driver = props.getProperty("DB_DRIVER_CLASS");
-        if (driver != null) {
-            try {
-                Class.forName(driver);
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            }
-        }
-        String url = props.getProperty("DB_URL");
-        String username = props.getProperty("DB_USERNAME");
-        String password = props.getProperty("DB_PASSWORD");
-
-        try {
-            con = DriverManager.getConnection(url, username, password);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
 
     public SendFollowReturnModel followUser(int user_id, int followed_user_id) {
         SendFollowReturnModel returnModel = new SendFollowReturnModel();
-        try {
-            if (con == null || con.isClosed()) {
-                prepareDatabase();
+        try (Connection connection = DriverManager.getConnection(connectionUrl)) {
+            try {
+                CallableStatement cstmnt = connection.prepareCall("{CALL followUser(?,?)}");
+                cstmnt.setInt(1, user_id);
+                cstmnt.setInt(2, followed_user_id);
+
+                cstmnt.executeUpdate();
+
+                returnModel.setSuccess(true);
+            } catch (SQLException e) {
+                returnModel.setSuccess(false);
+                returnModel.setErrorMessage(e.toString());
             }
-            PreparedStatement stmt = con.prepareStatement("INSERT INTO `follow` (`user_id`, `followed_user_id`) VALUES (?,?)");
-            stmt.setInt(1, user_id);
-            stmt.setInt(2, followed_user_id);
-
-            stmt.execute();
-
-            con.close();
-
-            returnModel.setSuccess(true);
         } catch (SQLException e) {
             returnModel.setErrorMessage(e.getMessage());
             returnModel.setSuccess(false);
@@ -78,20 +42,21 @@ public class FollowDatabaseContext extends AbstractFollowContext {
     @Override
     public GetFollowersReturnModel getFollowers(int user_id) {
         GetFollowersReturnModel returnModel = new GetFollowersReturnModel();
-        try {
-            if (con == null || con.isClosed()) {
-                prepareDatabase();
-            }
-            PreparedStatement stmt = con.prepareStatement("SELECT * FROM `follow` WHERE `followed_user_id` = ?");
-            stmt.setInt(1, user_id);
+        try (Connection connection = DriverManager.getConnection(connectionUrl)) {
+            try {
+                CallableStatement cstmnt = connection.prepareCall("{CALL getFollowers(?)}");
+                cstmnt.setInt(1, user_id);
+                cstmnt.execute();
+                ResultSet rs = cstmnt.getResultSet();
+                while (rs.next()) {
+                    returnModel.addFollower(rs.getInt("user_id"));
+                }
 
-            ResultSet rs = stmt.executeQuery();
-            while (rs.next()) {
-                returnModel.addFollower(rs.getInt("user_id"));
+                returnModel.setSuccess(true);
+            } catch (SQLException e) {
+                returnModel.setSuccess(false);
+                returnModel.setErrorMessage(e.toString());
             }
-
-            con.close();
-            returnModel.setSuccess(true);
         } catch (SQLException e) {
             returnModel.setErrorMessage(e.getMessage());
             returnModel.setSuccess(false);
@@ -102,20 +67,21 @@ public class FollowDatabaseContext extends AbstractFollowContext {
     @Override
     public GetFollowedReturnModel getFollowed(int user_id) {
         GetFollowedReturnModel returnModel = new GetFollowedReturnModel();
-        try {
-            if (con == null || con.isClosed()) {
-                prepareDatabase();
-            }
-            PreparedStatement stmt = con.prepareStatement("SELECT * FROM `follow` WHERE `user_id` = ?");
-            stmt.setInt(1, user_id);
+        try (Connection connection = DriverManager.getConnection(connectionUrl)) {
+            try {
+                CallableStatement cstmnt = connection.prepareCall("{CALL getFollowed(?)}");
+                cstmnt.setInt(1, user_id);
+                cstmnt.execute();
+                ResultSet rs = cstmnt.getResultSet();
+                while (rs.next()) {
+                    returnModel.addFollowed(rs.getInt("followed_user_id"));
+                }
 
-            ResultSet rs = stmt.executeQuery();
-            while (rs.next()) {
-                returnModel.addFollowed(rs.getInt("followed_user_id"));
+                returnModel.setSuccess(true);
+            } catch (SQLException e) {
+                returnModel.setSuccess(false);
+                returnModel.setErrorMessage(e.toString());
             }
-
-            con.close();
-            returnModel.setSuccess(true);
         } catch (SQLException e) {
             returnModel.setErrorMessage(e.getMessage());
             returnModel.setSuccess(false);
@@ -126,28 +92,31 @@ public class FollowDatabaseContext extends AbstractFollowContext {
     @Override
     public GetStatsReturnModel getStats(int user_id) {
         GetStatsReturnModel returnModel = new GetStatsReturnModel();
-        try {
-            if (con == null || con.isClosed()) {
-                prepareDatabase();
+        try (Connection connection = DriverManager.getConnection(connectionUrl)) {
+            try {
+                CallableStatement cstmnt = connection.prepareCall("{CALL getCountFollowed(?)}");
+                cstmnt.setInt(1, user_id);
+
+                cstmnt.execute();
+                ResultSet rs = cstmnt.getResultSet();
+                while (rs.next()) {
+                    returnModel.setFollowed(rs.getInt("followed"));
+                }
+
+                CallableStatement cstmnt2 = connection.prepareCall("{CALL getCountFollowers(?)}");
+                cstmnt2.setInt(1, user_id);
+
+                cstmnt2.execute();
+                ResultSet rs2 = cstmnt2.getResultSet();
+                while (rs2.next()) {
+                    returnModel.setFollowers(rs2.getInt("followers"));
+                }
+
+                returnModel.setSuccess(true);
+            } catch (SQLException e) {
+                returnModel.setSuccess(false);
+                returnModel.setErrorMessage(e.toString());
             }
-            PreparedStatement stmt = con.prepareStatement("SELECT COUNT(user_id) as 'followed' from follow where `followed_user_id` = ?");
-            stmt.setInt(1, user_id);
-
-            PreparedStatement stmt2 = con.prepareStatement("SELECT COUNT(user_id) as 'followers' from follow where `user_id` = ?");
-            stmt2.setInt(1, user_id);
-
-            ResultSet rs = stmt.executeQuery();
-            if (rs.next()) {
-                returnModel.setFollowed(rs.getInt("followed"));
-            }
-
-            ResultSet rs2 = stmt2.executeQuery();
-            if (rs2.next()) {
-                returnModel.setFollowers(rs2.getInt("followers"));
-            }
-
-            con.close();
-            returnModel.setSuccess(true);
         } catch (SQLException e) {
             returnModel.setErrorMessage(e.getMessage());
             returnModel.setSuccess(false);
