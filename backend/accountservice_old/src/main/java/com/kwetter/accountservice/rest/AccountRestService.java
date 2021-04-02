@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import static org.apache.commons.codec.digest.DigestUtils.sha256Hex;
 
 @RestController
-public class AccountRestService {
+public class AccountRestService{
 
     @Autowired
     private AccountManager manager = new AccountManager();

@@ -4,6 +4,7 @@ public class AccountReturnModel {
     private int id;
     private boolean success;
     private String error;
+    private String token;
 
     public int getId() {
         return id;
@@ -27,5 +28,13 @@ public class AccountReturnModel {
 
     public void setError(String error) {
         this.error = error;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }
