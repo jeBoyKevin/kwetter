@@ -1,7 +1,9 @@
-package murraco.controller;
+package com.kwetter.accountservice.controller;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.kwetter.accountservice.dto.UserDataDTO;
+import com.kwetter.accountservice.model.User;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -20,10 +22,8 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import io.swagger.annotations.Authorization;
-import murraco.dto.UserDataDTO;
-import murraco.dto.UserResponseDTO;
-import murraco.model.User;
-import murraco.service.UserService;
+import com.kwetter.accountservice.dto.UserResponseDTO;
+import com.kwetter.accountservice.service.UserService;
 
 @RestController
 @RequestMapping("/user")

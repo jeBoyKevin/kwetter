@@ -13,9 +13,27 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
-		<start-class>murraco.JwtAuthServiceApp</start-class>
+		<start-class>com.kwetter.accountservice.JwtAuthServiceApp</start-class>
 	</properties>
+	<distributionManagement>
 
+		<repository>
+			<id>AccountServiceBuild</id>
+			<url>https://pkgs.dev.azure.com/382763/Kwetter/_packaging/AccountServiceBuild/maven/v1</url>
+		</repository>
+	</distributionManagement>
+	<repositories>
+		<repository>
+			<id>AccountServiceBuild</id>
+			<url>https://pkgs.dev.azure.com/382763/Kwetter/_packaging/AccountServiceBuild/maven/v1</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>

@@ -1,4 +1,4 @@
-package murraco.security;
+package com.kwetter.accountservice.security;
 
 import java.util.Base64;
 import java.util.Date;
@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 
+import com.kwetter.accountservice.model.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -22,8 +23,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import murraco.exception.CustomException;
-import murraco.model.Role;
+import com.kwetter.accountservice.exception.CustomException;
 
 @Component
 public class JwtTokenProvider {

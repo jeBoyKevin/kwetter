@@ -1,4 +1,4 @@
-package murraco.exception;
+package com.kwetter.accountservice.exception;
 
 import java.io.IOException;
 import java.util.Map;

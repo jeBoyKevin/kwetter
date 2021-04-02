@@ -5,7 +5,7 @@
     http://www.springframework.org/schema/beans/spring-beans-4.3.xsd">
 
 
-    <bean id="WebConfig" class="murraco.WebConfig">
+    <bean id="WebConfig" class="com.kwetter.accountservice.WebConfig">
 
     </bean>
 

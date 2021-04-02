@@ -51,12 +51,12 @@ export default function FormDialog() {
     e.preventDefault();
     const { username, password } = details;
 
-    axios.post('http://localhost:8083/account/signin', {
+    axios.post('http://localhost:8083/user/signin?username='+ username +"&password=" + password, {
       username: username,
       password: password
     })
     .then(response => {
-      localStorage.setItem('userid', response.data.id)
+      localStorage.setItem('token', response.data.id)
       handleClose();
     })
     .catch(error => {
@@ -77,7 +77,8 @@ export default function FormDialog() {
       ]
     })
     .then(response => {
-      localStorage.setItem('userid', response.data)
+      console.log(response);
+      localStorage.setItem('token', response.data)
       handleClose();
     })
     .catch(error => {

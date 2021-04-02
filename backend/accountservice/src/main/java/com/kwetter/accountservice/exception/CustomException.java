@@ -1,4 +1,4 @@
-package murraco.exception;
+package com.kwetter.accountservice.exception;
 
 import org.springframework.http.HttpStatus;
 

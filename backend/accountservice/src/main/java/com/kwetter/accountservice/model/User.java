@@ -1,4 +1,4 @@
-package murraco.model;
+package com.kwetter.accountservice.model;
 
 import java.util.List;
 

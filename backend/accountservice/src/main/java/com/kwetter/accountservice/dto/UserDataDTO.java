@@ -1,26 +1,18 @@
-package murraco.dto;
+package com.kwetter.accountservice.dto;
 
 import java.util.List;
 
+import com.kwetter.accountservice.model.Role;
 import io.swagger.annotations.ApiModelProperty;
-import murraco.model.Role;
 
-public class UserResponseDTO {
-
+public class UserDataDTO {
+  
   @ApiModelProperty(position = 0)
-  private Integer id;
-  @ApiModelProperty(position = 1)
   private String username;
+  @ApiModelProperty(position = 1)
+  private String password;
   @ApiModelProperty(position = 2)
   List<Role> roles;
-
-  public Integer getId() {
-    return id;
-  }
-
-  public void setId(Integer id) {
-    this.id = id;
-  }
 
   public String getUsername() {
     return username;
@@ -30,6 +22,13 @@ public class UserResponseDTO {
     this.username = username;
   }
 
+  public String getPassword() {
+    return password;
+  }
+
+  public void setPassword(String password) {
+    this.password = password;
+  }
 
   public List<Role> getRoles() {
     return roles;

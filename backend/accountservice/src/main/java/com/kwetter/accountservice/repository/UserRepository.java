@@ -1,10 +1,9 @@
-package murraco.repository;
+package com.kwetter.accountservice.repository;
 
 import javax.transaction.Transactional;
 
+import com.kwetter.accountservice.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
-
-import murraco.model.User;
 
 public interface UserRepository extends JpaRepository<User, Integer> {
 

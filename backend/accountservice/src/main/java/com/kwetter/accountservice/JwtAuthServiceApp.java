@@ -1,7 +1,4 @@
-package murraco;
-
-import java.util.ArrayList;
-import java.util.Arrays;
+package com.kwetter.accountservice;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,9 +7,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
-import murraco.model.Role;
-import murraco.model.User;
-import murraco.service.UserService;
+import com.kwetter.accountservice.service.UserService;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportResource;
 
