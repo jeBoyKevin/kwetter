@@ -3,7 +3,7 @@ package com.kwetter.accountservice.controller;
 import javax.servlet.http.HttpServletRequest;
 
 import com.kwetter.accountservice.dto.UserDataDTO;
-import com.kwetter.accountservice.model.User;
+import com.kwetter.accountservice.model.Account;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -54,7 +54,7 @@ public class UserController {
       @ApiResponse(code = 403, message = "Access denied"), //
       @ApiResponse(code = 422, message = "Username is already in use")})
   public String signup(@ApiParam("Signup User") @RequestBody UserDataDTO user) {
-    return userService.signup(modelMapper.map(user, User.class));
+    return userService.signup(modelMapper.map(user, Account.class));
   }
 
   @DeleteMapping(value = "/{username}")

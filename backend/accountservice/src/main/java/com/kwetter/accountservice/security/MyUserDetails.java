@@ -1,6 +1,6 @@
 package com.kwetter.accountservice.security;
 
-import com.kwetter.accountservice.model.User;
+import com.kwetter.accountservice.model.Account;
 import com.kwetter.accountservice.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,16 +16,16 @@ public class MyUserDetails implements UserDetailsService {
 
   @Override
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-    final User user = userRepository.findByUsername(username);
+    final Account account = userRepository.findByUsername(username);
 
-    if (user == null) {
+    if (account == null) {
       throw new UsernameNotFoundException("User '" + username + "' not found");
     }
 
     return org.springframework.security.core.userdetails.User//
         .withUsername(username)//
-        .password(user.getPassword())//
-        .authorities(user.getRoles())//
+        .password(account.getPassword())//
+        .authorities(account.getRoles())//
         .accountExpired(false)//
         .accountLocked(false)//
         .credentialsExpired(false)//

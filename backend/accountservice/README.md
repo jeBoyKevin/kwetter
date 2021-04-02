@@ -80,13 +80,13 @@ Let's explain some concepts of this definition further.
 
 **Compact**: Because of their smaller size, JWTs can be sent through a URL, POST parameter, or inside an HTTP header. Additionally, the smaller size means transmission is fast.
 
-**Self-contained**: The payload contains all the required information about the user, avoiding the need to query the database more than once.
+**Self-contained**: The payload contains all the required information about the account, avoiding the need to query the database more than once.
 
 ## When should you use JSON Web Tokens?
 
 Here are some scenarios where JSON Web Tokens are useful:
 
-**Authentication**: This is the most common scenario for using JWT. Once the user is logged in, each subsequent request will include the JWT, allowing the user to access routes, services, and resources that are permitted with that token. Single Sign On is a feature that widely uses JWT nowadays, because of its small overhead and its ability to be easily used across different domains.
+**Authentication**: This is the most common scenario for using JWT. Once the account is logged in, each subsequent request will include the JWT, allowing the account to access routes, services, and resources that are permitted with that token. Single Sign On is a feature that widely uses JWT nowadays, because of its small overhead and its ability to be easily used across different domains.
 
 **Information Exchange**: JSON Web Tokens are a good way of securely transmitting information between parties. Because JWTs can be signed—for example, using public/private key pairs—you can be sure the senders are who they say they are. Additionally, as the signature is calculated using the header and the payload, you can also verify that the content hasn't been tampered with.
 
@@ -121,7 +121,7 @@ Then, this JSON is Base64Url encoded to form the first part of the JWT.
 
 **Payload**
 
-The second part of the token is the payload, which contains the claims. Claims are statements about an entity (typically, the user) and additional metadata. There are three types of claims: reserved, public, and private claims.
+The second part of the token is the payload, which contains the claims. Claims are statements about an entity (typically, the account) and additional metadata. There are three types of claims: reserved, public, and private claims.
 
 - **Reserved claims**: These are a set of predefined claims which are not mandatory but recommended, to provide a set of useful, interoperable claims. Some of them are: iss (issuer), exp (expiration time), sub (subject), aud (audience), and others.
 
@@ -167,13 +167,13 @@ The following shows a JWT that has the previous header and payload encoded, and 
 
 ## How do JSON Web Tokens work?
 
-In authentication, when the user successfully logs in using their credentials, a JSON Web Token will be returned and must be saved locally (typically in local storage, but cookies can be also used), instead of the traditional approach of creating a session in the server and returning a cookie.
+In authentication, when the account successfully logs in using their credentials, a JSON Web Token will be returned and must be saved locally (typically in local storage, but cookies can be also used), instead of the traditional approach of creating a session in the server and returning a cookie.
 
-Whenever the user wants to access a protected route or resource, the user agent should send the JWT, typically in the Authorization header using the Bearer schema. The content of the header should look like the following:
+Whenever the account wants to access a protected route or resource, the account agent should send the JWT, typically in the Authorization header using the Bearer schema. The content of the header should look like the following:
 
 `Authorization: Bearer <token>`
 
-This is a stateless authentication mechanism as the user state is never saved in server memory. The server's protected routes will check for a valid JWT in the Authorization header, and if it's present, the user will be allowed to access protected resources. As JWTs are self-contained, all the necessary information is there, reducing the need to query the database multiple times.
+This is a stateless authentication mechanism as the account state is never saved in server memory. The server's protected routes will check for a valid JWT in the Authorization header, and if it's present, the account will be allowed to access protected resources. As JWTs are self-contained, all the necessary information is there, reducing the need to query the database multiple times.
 
 This allows you to fully rely on data APIs that are stateless and even make requests to downstream services. It doesn't matter which domains are serving your APIs, so Cross-Origin Resource Sharing (CORS) won't be an issue as it doesn't use cookies.
 
@@ -194,7 +194,7 @@ Token based authentication schema's became immensely popular in recent times, as
 Some trade-offs have to be made with this approach:
 
 - More vulnerable to XSS attacks
-- Access token can contain outdated authorization claims (e.g when some of the user privileges are revoked)
+- Access token can contain outdated authorization claims (e.g when some of the account privileges are revoked)
 - Access tokens can grow in size in case of increased number of claims
 - File download API can be tricky to implement
 - True statelessness and revocation are mutually exclusive
@@ -203,9 +203,9 @@ Some trade-offs have to be made with this approach:
 
 1. User obtains Refresh and Access tokens by providing credentials to the Authorization server
 2. User sends Access token with each request to access protected API resource
-3. Access token is signed and contains user identity (e.g. user id) and authorization claims.
+3. Access token is signed and contains account identity (e.g. account id) and authorization claims.
 
-It's important to note that authorization claims will be included with the Access token. Why is this important? Well, let's say that authorization claims (e.g user privileges in the database) are changed during the life time of Access token. Those changes will not become effective until new Access token is issued. In most cases this is not big issue, because Access tokens are short-lived. Otherwise go with the opaque token pattern.
+It's important to note that authorization claims will be included with the Access token. Why is this important? Well, let's say that authorization claims (e.g account privileges in the database) are changed during the life time of Access token. Those changes will not become effective until new Access token is issued. In most cases this is not big issue, because Access tokens are short-lived. Otherwise go with the opaque token pattern.
 
 # Implementation Details
 
@@ -286,9 +286,9 @@ The `JwtTokenProvider` has the following responsibilities:
 
 **MyUserDetails**
 
-Implements `UserDetailsService` in order to define our own custom *loadUserbyUsername* function. The `UserDetailsService` interface is used to retrieve user-related data. It has one method named *loadUserByUsername* which finds a user entity based on the username and can be overridden to customize the process of finding the user.
+Implements `UserDetailsService` in order to define our own custom *loadUserbyUsername* function. The `UserDetailsService` interface is used to retrieve account-related data. It has one method named *loadUserByUsername* which finds a account entity based on the username and can be overridden to customize the process of finding the account.
 
-It is used by the `DaoAuthenticationProvider` to load details about the user during authentication.
+It is used by the `DaoAuthenticationProvider` to load details about the account during authentication.
 
 **WebSecurityConfig**
 
@@ -315,7 +315,7 @@ http.authorizeRequests()//
   // Disallow everything else..
   .anyRequest().authenticated();
 
-// If a user try to access a resource without having enough permissions
+// If a account try to access a resource without having enough permissions
 http.exceptionHandling().accessDeniedPage("/login");
 
 // Apply JWT
@@ -332,7 +332,7 @@ http.apply(new JwtTokenFilterConfigurer(jwtTokenProvider));
 2. Fork this repository and clone it
   
 ```
-$ git clone https://github.com/<your-user>/spring-boot-jwt
+$ git clone https://github.com/<your-account>/spring-boot-jwt
 ```
 
 3. Navigate into the folder  
@@ -366,7 +366,7 @@ server:
 $ curl -X GET http://localhost:8080/users/me
 ```
 
-8. Make a POST request to `/users/signin` with the default admin user we programatically created to get a valid JWT token
+8. Make a POST request to `/users/signin` with the default admin account we programatically created to get a valid JWT token
 
 ```
 $ curl -X POST 'http://localhost:8080/users/signin?username=admin&password=admin'

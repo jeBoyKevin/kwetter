@@ -3,7 +3,7 @@ package com.kwetter.accountservice.service;
 import javax.servlet.http.HttpServletRequest;
 
 import com.kwetter.accountservice.exception.CustomException;
-import com.kwetter.accountservice.model.User;
+import com.kwetter.accountservice.model.Account;
 import com.kwetter.accountservice.repository.UserRepository;
 import com.kwetter.accountservice.security.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,11 +38,11 @@ public class UserService {
     }
   }
 
-  public String signup(User user) {
-    if (!userRepository.existsByUsername(user.getUsername())) {
-      user.setPassword(passwordEncoder.encode(user.getPassword()));
-      userRepository.save(user);
-      return jwtTokenProvider.createToken(user.getUsername(), user.getRoles());
+  public String signup(Account account) {
+    if (!userRepository.existsByUsername(account.getUsername())) {
+      account.setPassword(passwordEncoder.encode(account.getPassword()));
+      userRepository.save(account);
+      return jwtTokenProvider.createToken(account.getUsername(), account.getRoles());
     } else {
       throw new CustomException("Username is already in use", HttpStatus.UNPROCESSABLE_ENTITY);
     }
@@ -52,15 +52,15 @@ public class UserService {
     userRepository.deleteByUsername(username);
   }
 
-  public User search(String username) {
-    User user = userRepository.findByUsername(username);
-    if (user == null) {
+  public Account search(String username) {
+    Account account = userRepository.findByUsername(username);
+    if (account == null) {
       throw new CustomException("The user doesn't exist", HttpStatus.NOT_FOUND);
     }
-    return user;
+    return account;
   }
 
-  public User whoami(HttpServletRequest req) {
+  public Account whoami(HttpServletRequest req) {
     return userRepository.findByUsername(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(req)));
   }
 
