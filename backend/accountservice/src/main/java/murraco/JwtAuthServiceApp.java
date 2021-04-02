@@ -13,7 +13,11 @@ import org.springframework.context.annotation.Bean;
 import murraco.model.Role;
 import murraco.model.User;
 import murraco.service.UserService;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.ImportResource;
 
+@Configuration
+@ImportResource("classpath:application_config.xml")
 @SpringBootApplication
 public class JwtAuthServiceApp implements CommandLineRunner {
 

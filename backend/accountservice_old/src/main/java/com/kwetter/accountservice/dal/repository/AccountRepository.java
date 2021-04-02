@@ -17,8 +17,7 @@ public class AccountRepository implements UserDetailsService {
     }
 
     public AccountReturnModel register(String username, String password) {
-        AccountReturnModel returnModel = tweetContext.register(username, password);
-        returnModel.setToken();
+       return tweetContext.register(username, password);
     }
     public AccountReturnModel login(String username, String password) {
         return tweetContext.login(username, password);

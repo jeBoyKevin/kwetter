@@ -51,7 +51,7 @@ export default function FormDialog() {
     e.preventDefault();
     const { username, password } = details;
 
-    axios.post('http://localhost:8079/account/login', {
+    axios.post('http://localhost:8083/account/signin', {
       username: username,
       password: password
     })
@@ -69,12 +69,15 @@ export default function FormDialog() {
     e.preventDefault();
     const { username, password } = details;
 
-    axios.post('http://localhost:8079/account/register', {
+    axios.post('http://localhost:8083/user/signup', {
       username: username,
-      password: password
+      password: password,
+      roles: [
+        "ROLE_CLIENT"
+      ]
     })
     .then(response => {
-      localStorage.setItem('userid', response.data.id)
+      localStorage.setItem('userid', response.data)
       handleClose();
     })
     .catch(error => {
