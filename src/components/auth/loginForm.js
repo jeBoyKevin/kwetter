@@ -6,18 +6,27 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import axios from 'axios'
+import axios from 'axios';
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
+
+
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 
 export default function FormDialog() {
 
   const [open, setOpen] = React.useState(false);
+
   const [details, setDetails] = useState({
     username: '',
     password: ''
   });
+  const [errorOpen, seterrorOpen] = useState(false);
   const [error, setError] = useState({
     warning: ''
-  });
+  })
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -25,6 +34,13 @@ export default function FormDialog() {
   const handleClose = () => {
     setOpen(false);
   };
+
+  const handleErrorOpen = () => {
+    seterrorOpen(true);
+  }
+  const handleErrorClose = () => {
+    seterrorOpen(false);
+  }
 
   const handleChange = name => e => {
     setDetails({ ...details, [name]: e.target.value });
@@ -40,11 +56,12 @@ export default function FormDialog() {
       password: password
     })
     .then(response => {
-      setError({error: ""})
       localStorage.setItem('userid', response.data.id)
+      handleClose();
     })
     .catch(error => {
       setError({warning: error.response.data.error})
+      handleErrorOpen();
     })
   };
 
@@ -57,11 +74,12 @@ export default function FormDialog() {
       password: password
     })
     .then(response => {
-      setError({error: ""})
       localStorage.setItem('userid', response.data.id)
+      handleClose();
     })
     .catch(error => {
-        setError({warning: error.response.data.error})
+      setError({warning: error.response.data.error})
+      handleErrorOpen();
       })
   };
 
@@ -97,9 +115,11 @@ export default function FormDialog() {
             onChange={handleChange('password')}
             fullWidth
           />
-          <DialogContentText>
-            {error.warning}
-          </DialogContentText>
+          <Snackbar open={errorOpen} autoHideDuration={3000} onClose={handleErrorClose}>
+            <Alert onClose={handleErrorClose} severity="error">
+              {error.warning}
+            </Alert>
+          </Snackbar>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="primary">
