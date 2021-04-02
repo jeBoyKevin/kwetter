@@ -86,11 +86,4 @@ public class RestService {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(objectMapper.writeValueAsString(returnModel));
         }
     }
-
-    @RequestMapping(value =  "/follow",
-                    method = RequestMethod.POST,
-                    consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity followProfile() throws JsonProcessingException {
-        return null;
-    }
 }

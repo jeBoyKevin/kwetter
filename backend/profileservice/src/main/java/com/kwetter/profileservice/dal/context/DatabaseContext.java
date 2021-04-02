@@ -13,64 +13,35 @@ import java.util.Properties;
 
 public class DatabaseContext extends AbstractContext {
 
-    private Connection con;
+    private final String connectionUrl = "jdbc:sqlserver://kwetter.database.windows.net:1433;DatabaseName=profile;user=kevints@kwetter;password=k98p&ewgt^64!wk2;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;";
+    private static Statement statement;
 
-    private void prepareDatabase() {
-        Properties props = new Properties();
-        FileInputStream in = null;
-        try {
-            in = new FileInputStream("./db.properties");
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        try {
-            props.load(in);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
-            in.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        String driver = props.getProperty("DB_DRIVER_CLASS");
-        if (driver != null) {
-            try {
-                Class.forName(driver);
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            }
-        }
-        String url = props.getProperty("DB_URL");
-        String username = props.getProperty("DB_USERNAME");
-        String password = props.getProperty("DB_PASSWORD");
+    public void closeConnection() {
+        // TODO Auto-generated method stub
 
-        try {
-            con = DriverManager.getConnection(url, username, password);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
+
 
     public GetProfileReturnModel getProfile(int user_id) {
         GetProfileReturnModel returnModel = new GetProfileReturnModel();
-        try {
-            if (con == null || con.isClosed()) {
-                prepareDatabase();
-            }
-            PreparedStatement stmt = con.prepareStatement("SELECT * FROM `profile` where  `user_id` = ?");
-            stmt.setInt(1, user_id);
+        try (Connection connection = DriverManager.getConnection(connectionUrl)) {
+            try {
+                CallableStatement cstmnt = connection.prepareCall("{CALL getProfile(?)}");
+                cstmnt.setInt(1, user_id);
 
-            ResultSet rs = stmt.executeQuery();
-            if (rs.next()) {
-                returnModel.setBio(rs.getString("bio"));
-                returnModel.setLocation(rs.getString("location"));
-                returnModel.setPicture(rs.getString("picture"));
-                returnModel.setWebsite(rs.getString("website"));
-            }
-            con.close();
-
-            returnModel.setSuccess(true);
+                cstmnt.execute();
+                ResultSet rs = cstmnt.getResultSet();
+                if (rs.next()) {
+                    returnModel.setBio(rs.getString("bio"));
+                    returnModel.setLocation(rs.getString("location"));
+                    returnModel.setPicture(rs.getString("picture"));
+                    returnModel.setWebsite(rs.getString("website"));
+                }
+                returnModel.setSuccess(true);
+            } catch (SQLException e) {
+                returnModel.setSuccess(false);
+                returnModel.setErrorMessage(e.toString());
+        }
         } catch (SQLException e) {
             returnModel.setErrorMessage(e.getMessage());
             returnModel.setSuccess(false);
@@ -81,20 +52,21 @@ public class DatabaseContext extends AbstractContext {
     @Override
     public UpdateProfileReturnModel updateProfile(int user_id, String bio, String location, String website) {
         UpdateProfileReturnModel returnModel = new UpdateProfileReturnModel();
-        try {
-            if (con == null || con.isClosed()) {
-                prepareDatabase();
+        try (Connection connection = DriverManager.getConnection(connectionUrl)) {
+            try {
+                CallableStatement cstmnt = connection.prepareCall("{CALL uploadProfile(?,?,?,?)}");
+                cstmnt.setInt(1, user_id);
+                cstmnt.setString(2, bio);
+                cstmnt.setString(3, location);
+                cstmnt.setString(4, website);
+
+                cstmnt.executeUpdate();
+
+                returnModel.setSuccess(true);
+            } catch (SQLException e) {
+                returnModel.setSuccess(false);
+                returnModel.setErrorMessage(e.toString());
             }
-            PreparedStatement stmt = con.prepareStatement("UPDATE `profile` SET `bio` = ?, `location` = ?, `website` = ? WHERE `user_id` = ?");
-            stmt.setString(1, bio);
-            stmt.setString(2, location);
-            stmt.setString(3, website);
-            stmt.setInt(4, user_id);
-
-            stmt.execute();
-            con.close();
-
-            returnModel.setSuccess(true);
         } catch (SQLException e) {
             returnModel.setErrorMessage(e.getMessage());
             returnModel.setSuccess(false);
@@ -106,18 +78,19 @@ public class DatabaseContext extends AbstractContext {
     public UploadPictureReturnModel uploadPicture(int user_id, String picture) {
 
         UploadPictureReturnModel returnModel = new UploadPictureReturnModel();
-        try {
-            if (con == null || con.isClosed()) {
-                prepareDatabase();
+        try (Connection connection = DriverManager.getConnection(connectionUrl)) {
+            try {
+                CallableStatement cstmnt = connection.prepareCall("{CALL uploadPicture(?,?)}");
+                cstmnt.setInt(1, user_id);
+                cstmnt.setString(2, picture);
+
+                cstmnt.executeUpdate();
+
+                returnModel.setSuccess(true);
+            } catch (SQLException e) {
+                returnModel.setSuccess(false);
+                returnModel.setErrorMessage(e.toString());
             }
-            PreparedStatement stmt = con.prepareStatement("UPDATE `profile` SET `picture` = ? WHERE `user_id` = ?");
-            stmt.setString(1, picture);
-            stmt.setInt(2, user_id);
-
-            stmt.execute();
-            con.close();
-
-            returnModel.setSuccess(true);
         } catch (SQLException e) {
             returnModel.setErrorMessage(e.getMessage());
             returnModel.setSuccess(false);
