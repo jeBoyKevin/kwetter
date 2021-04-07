@@ -11,60 +11,24 @@ import java.util.Properties;
 
 public class TweetDatabaseContext extends AbstractTweetContext {
 
-    private Connection con;
-
-    private void prepareDatabase() {
-        Properties props = new Properties();
-        FileInputStream in = null;
-        try {
-            in = new FileInputStream("./db.properties");
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        try {
-            props.load(in);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
-            in.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        String driver = props.getProperty("DB_DRIVER_CLASS");
-        if (driver != null) {
-            try {
-                Class.forName(driver);
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            }
-        }
-        String url = props.getProperty("DB_URL");
-        String username = props.getProperty("DB_USERNAME");
-        String password = props.getProperty("DB_PASSWORD");
-
-        try {
-            con = DriverManager.getConnection(url, username, password);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
+    private final String connectionUrl = "jdbc:sqlserver://kwetter.database.windows.net:1433;DatabaseName=tweet;user=kevints@kwetter;password=k98p&ewgt^64!wk2;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;";
+    private static Statement statement;
 
     public SendTweetReturnModel sendTweet(int user_id, String message) {
         SendTweetReturnModel returnModel = new SendTweetReturnModel();
-        try {
-            if (con == null || con.isClosed()) {
-                prepareDatabase();
+        try (Connection connection = DriverManager.getConnection(connectionUrl)) {
+            try {
+                CallableStatement cstmnt = connection.prepareCall("{CALL sendTweet(?,?)}");
+                cstmnt.setInt(1, user_id);
+                cstmnt.setString(2, message);
+
+                cstmnt.executeUpdate();
+
+                returnModel.setSuccess(true);
+            } catch (SQLException e) {
+                returnModel.setSuccess(false);
+                returnModel.setErrorMessage(e.toString());
             }
-            PreparedStatement stmt = con.prepareStatement("INSERT INTO `tweet` (`user_id`, `message`, `likes`) VALUES (?,?,0)");
-            stmt.setInt(1, user_id);
-            stmt.setString(2, message);
-
-            stmt.execute();
-
-            con.close();
-
-            returnModel.setSuccess(true);
         } catch (SQLException e) {
             returnModel.setErrorMessage(e.getMessage());
             returnModel.setSuccess(false);
@@ -76,8 +40,25 @@ public class TweetDatabaseContext extends AbstractTweetContext {
         return null;
     }
 
-    public String deleteTweet() {
-        return null;
+    public SendTweetReturnModel deleteTweet(int tweet_id) {
+        SendTweetReturnModel returnModel = new SendTweetReturnModel();
+        try (Connection connection = DriverManager.getConnection(connectionUrl)) {
+            try {
+                CallableStatement cstmnt = connection.prepareCall("{CALL deleteTweet(?)}");
+                cstmnt.setInt(1, tweet_id);
+
+                cstmnt.executeUpdate();
+
+                returnModel.setSuccess(true);
+            } catch (SQLException e) {
+                returnModel.setSuccess(false);
+                returnModel.setErrorMessage(e.toString());
+            }
+        } catch (SQLException e) {
+            returnModel.setErrorMessage(e.getMessage());
+            returnModel.setSuccess(false);
+        }
+        return returnModel;
     }
 
     public String likeTweet() {
