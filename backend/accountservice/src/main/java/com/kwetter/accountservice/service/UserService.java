@@ -1,7 +1,5 @@
 package com.kwetter.accountservice.service;
 
-import javax.servlet.http.HttpServletRequest;
-
 import com.kwetter.accountservice.exception.CustomException;
 import com.kwetter.accountservice.model.Account;
 import com.kwetter.accountservice.repository.UserRepository;
@@ -13,6 +11,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import javax.servlet.http.HttpServletRequest;
 
 @Service
 public class UserService {
@@ -67,5 +67,6 @@ public class UserService {
   public String refresh(String username) {
     return jwtTokenProvider.createToken(username, userRepository.findByUsername(username).getRoles());
   }
+
 
 }

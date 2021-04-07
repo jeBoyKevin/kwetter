@@ -86,4 +86,5 @@ public class RestService {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(objectMapper.writeValueAsString(returnModel));
         }
     }
+
 }

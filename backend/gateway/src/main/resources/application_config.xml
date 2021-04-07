@@ -5,10 +5,7 @@
     http://www.springframework.org/schema/beans/spring-beans-4.3.xsd">
 
 
-    <bean id="TweetManager" class="com.kwetter.tweetservice.manager.TweetManager">
-    </bean>
-
-    <bean id="WebConfig" class="WebConfig">
+    <bean id="WebConfig" class="com.kwetter.gateway.WebConfig">
 
     </bean>
 </beans>

@@ -25,7 +25,7 @@ public class TweetRestService {
                     method = RequestMethod.POST,
                     consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity sendTweet(@RequestBody String json) throws JsonProcessingException {
-    SendTweetSubmitModel submitModel = objectMapper.readValue(json, SendTweetSubmitModel.class);
+        SendTweetSubmitModel submitModel = objectMapper.readValue(json, SendTweetSubmitModel.class);
         if (submitModel.getUser_id() == 0 || submitModel.getMessage().isEmpty()) {
           return new ResponseEntity<>("", HttpStatus.BAD_REQUEST);
         }

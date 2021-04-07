@@ -56,11 +56,17 @@ export default function FormDialog() {
       password: password
     })
     .then(response => {
-      localStorage.setItem('token', response.data.id)
+      console.log(response)
+      localStorage.setItem('token', response.data)
       handleClose();
     })
     .catch(error => {
-      setError({warning: error.response.data.error})
+      if (typeof error.response !== "undefined") {
+        setError({warning: error.response.data.error})
+      }
+      else {
+        setError({warning: "Connection to service refused"})
+      }
       handleErrorOpen();
     })
   };
