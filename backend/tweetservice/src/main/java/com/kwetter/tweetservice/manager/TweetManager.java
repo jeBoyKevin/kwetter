@@ -11,7 +11,7 @@ public class TweetManager {
         return tweetRepo.sendTweet(user_id, message);
     }
     public String getMentions() {return tweetRepo.getMentions();}
-    public String deleteTweet() {return tweetRepo.deleteTweet();}
+    public SendTweetReturnModel deleteTweet(int tweet_id) {return tweetRepo.deleteTweet(tweet_id);}
     public String likeTweet() {return tweetRepo.likeTweet();}
     public String getTweets() {return tweetRepo.getTweets();}
 }

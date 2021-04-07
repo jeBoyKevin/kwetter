@@ -11,10 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class TweetRestService {
@@ -49,10 +46,20 @@ public class TweetRestService {
                 .body(objectMapper.writeValueAsString(manager.getTweets()));
     }
 
-    @RequestMapping(value =  "", method = RequestMethod.DELETE)
-    public ResponseEntity deleteTweet() throws JsonProcessingException {
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(objectMapper.writeValueAsString(manager.deleteTweet()));
+    @RequestMapping(value =  "/{tweet_id}", method = RequestMethod.DELETE)
+    public ResponseEntity deleteTweet(@PathVariable("tweet_id") int tweet_id) throws JsonProcessingException {
+        if (tweet_id == 0) {
+            return new ResponseEntity<>("", HttpStatus.BAD_REQUEST);
+        }
+
+        SendTweetReturnModel returnModel = manager.deleteTweet(tweet_id);
+
+        if (returnModel.isSuccess()) {
+            return ResponseEntity.status(HttpStatus.OK).body(objectMapper.writeValueAsString(returnModel));
+        }
+        else {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(objectMapper.writeValueAsString(returnModel));
+        }
     }
 
     @RequestMapping(value =  "/like", method = RequestMethod.POST)

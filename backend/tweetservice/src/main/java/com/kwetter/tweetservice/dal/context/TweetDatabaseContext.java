@@ -40,8 +40,25 @@ public class TweetDatabaseContext extends AbstractTweetContext {
         return null;
     }
 
-    public String deleteTweet() {
-        return null;
+    public SendTweetReturnModel deleteTweet(int tweet_id) {
+        SendTweetReturnModel returnModel = new SendTweetReturnModel();
+        try (Connection connection = DriverManager.getConnection(connectionUrl)) {
+            try {
+                CallableStatement cstmnt = connection.prepareCall("{CALL deleteTweet(?)}");
+                cstmnt.setInt(1, tweet_id);
+
+                cstmnt.executeUpdate();
+
+                returnModel.setSuccess(true);
+            } catch (SQLException e) {
+                returnModel.setSuccess(false);
+                returnModel.setErrorMessage(e.toString());
+            }
+        } catch (SQLException e) {
+            returnModel.setErrorMessage(e.getMessage());
+            returnModel.setSuccess(false);
+        }
+        return returnModel;
     }
 
     public String likeTweet() {

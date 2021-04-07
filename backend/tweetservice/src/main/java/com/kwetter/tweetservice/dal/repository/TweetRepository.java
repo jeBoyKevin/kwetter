@@ -22,8 +22,8 @@ public class TweetRepository {
         return tweetContext.getMentions();
     }
 
-    public String deleteTweet() {
-        return tweetContext.deleteTweet();
+    public SendTweetReturnModel deleteTweet(int tweet_id) {
+        return tweetContext.deleteTweet(tweet_id);
     }
     public String likeTweet() {
         return tweetContext.likeTweet();
