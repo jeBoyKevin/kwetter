@@ -90,15 +90,13 @@ class ProfileDetails extends Component {
     }
 
     async changeProfile (e) {
-        var user_id = 0;
-        e.preventDefault();
-        console.log('Bearer ' + localStorage.getItem('token'))
+        var user_id = "0";
         await axios.get("http://localhost:8083/user/me", { headers: { Authorization:  'Bearer ' + localStorage.getItem('token') } 
         })
         .then(response => {
             user_id = response.data.id;
         })
-        if (user_id === this.props.id) {
+        if (user_id.toString() === this.props.id) {
             await axios({
                 method: 'PUT',
                 url: `http://localhost:8079/profile/`,
@@ -111,14 +109,13 @@ class ProfileDetails extends Component {
             });
             alert("Profile has been updated")
             }       
-            else {
-                alert("You cannot change someone else's profile")
-            } 
+        else {
+            alert("You cannot change someone else's profile")
+        } 
     }
 
 
     toggleInput(event) {
-        console.log("hey")
         this.setState(prevState => ({
             [event.target.id]: !prevState[event.target.id]
           }));
