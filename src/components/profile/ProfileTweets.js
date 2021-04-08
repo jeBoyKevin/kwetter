@@ -20,7 +20,9 @@ const useStyles = (theme) => ({
         border: "1px solid #000",
         borderBottom: "0",
         boxSizing: "inherit",
-        float: "left"
+        float: "left",
+        height: "256px",
+        overflowY: "auto"
     },
     tweetText: {
         margin: "0"
@@ -49,17 +51,7 @@ class ProfileTweets extends Component {
       }
 
     state = {
-        tweets: [
-            {
-                id: 1, text: "Test Tweet", date: "10 seconds ago"
-            },
-            {
-                id: 2, text: "Test Tweet 2", date: "1 hour ago"
-            },
-            {
-                id: 3, text: "Test Tweet 3", date: "13 hours ago"
-            },
-        ],
+        tweets: [],
         followers: [],
         isloaded: false
     }
@@ -78,6 +70,15 @@ class ProfileTweets extends Component {
         }
         else {
             console.log(response.data.errorMessage);
+        }
+        const response2 = await axios({
+            method: 'get',
+            url: `http://localhost:8079/tweet/${this.props.id}`
+        })
+        if (response2.data.success === true) {
+            this.setState({
+                tweets: response2.data.tweets
+            })
         }
     }
     
@@ -108,10 +109,11 @@ class ProfileTweets extends Component {
             <TableBody>
             {this.state.tweets.map((tweet, index) =>
 
-            <TableRow className={classes.tweet} key={tweet.id} style ={ index % 2? { background : "#e8e8e8" }:{ background : "white" }}>
+            <TableRow className={classes.tweet} key={index} style ={ index % 2? { background : "#e8e8e8" }:{ background : "white" }}>
                 <TableCell className={classes.tweetCell}>
-                    <p className={classes.tweetText}>{tweet.text}</p>
+                    <p className={classes.tweetText}>{tweet.message}</p>
                     <p className={classes.tweetDate}>{tweet.date}</p>
+                    <p className={classes.tweetDate}>{tweet.likes}</p>
                 </TableCell>
             </TableRow>
             )}

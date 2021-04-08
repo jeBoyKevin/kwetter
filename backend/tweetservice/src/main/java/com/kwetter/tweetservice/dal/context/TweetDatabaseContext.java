@@ -1,12 +1,16 @@
 package com.kwetter.tweetservice.dal.context;
 
 import com.kwetter.tweetservice.dal.interfaces.AbstractTweetContext;
+import com.kwetter.tweetservice.models.Tweet;
+import com.kwetter.tweetservice.models.returnModels.GetTweetsFromReturnModel;
 import com.kwetter.tweetservice.models.returnModels.SendTweetReturnModel;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.*;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Properties;
 
 public class TweetDatabaseContext extends AbstractTweetContext {
@@ -67,5 +71,37 @@ public class TweetDatabaseContext extends AbstractTweetContext {
 
     public String getTweets() {
         return null;
+    }
+
+    @Override
+    public GetTweetsFromReturnModel getTweetsFromUser(int user_id) {
+        GetTweetsFromReturnModel returnModel = new GetTweetsFromReturnModel();
+        try (Connection connection = DriverManager.getConnection(connectionUrl)) {
+            try {
+                CallableStatement cstmnt = connection.prepareCall("{CALL getTweetsByUser(?)}");
+                cstmnt.setInt(1, user_id);
+
+                cstmnt.execute();
+
+                ResultSet rs = cstmnt.getResultSet();
+
+                while (rs.next()) {
+                    Tweet tweet = new Tweet();
+                    tweet.setMessage(rs.getString("message"));
+                    tweet.setDate(rs.getString("date"));
+                    tweet.setLikes(rs.getInt("likes"));
+                    returnModel.addTweet(tweet);
+                }
+
+                returnModel.setSuccess(true);
+            } catch (SQLException e) {
+                returnModel.setSuccess(false);
+                returnModel.setErrorMessage(e.toString());
+            }
+        } catch (SQLException e) {
+            returnModel.setErrorMessage(e.getMessage());
+            returnModel.setSuccess(false);
+        }
+        return returnModel;
     }
 }

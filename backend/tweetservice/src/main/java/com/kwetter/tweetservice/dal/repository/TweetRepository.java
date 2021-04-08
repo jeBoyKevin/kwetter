@@ -2,6 +2,7 @@ package com.kwetter.tweetservice.dal.repository;
 
 import com.kwetter.tweetservice.dal.context.TweetDatabaseContext;
 import com.kwetter.tweetservice.dal.interfaces.AbstractTweetContext;
+import com.kwetter.tweetservice.models.returnModels.GetTweetsFromReturnModel;
 import com.kwetter.tweetservice.models.returnModels.SendTweetReturnModel;
 
 import org.springframework.stereotype.Repository;
@@ -31,5 +32,6 @@ public class TweetRepository {
     public String getTweets() {
         return tweetContext.getTweets();
     }
+    public GetTweetsFromReturnModel getTweetsFromUser(int user_id) {return tweetContext.getTweetsFromUser(user_id);}
 
 }

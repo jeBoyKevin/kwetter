@@ -59,6 +59,7 @@ export default function FormDialog() {
       console.log(response)
       localStorage.setItem('token', response.data)
       handleClose();
+      window.location.replace('');
     })
     .catch(error => {
       if (typeof error.response !== "undefined") {

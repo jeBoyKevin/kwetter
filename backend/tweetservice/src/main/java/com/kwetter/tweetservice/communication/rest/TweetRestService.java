@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.kwetter.tweetservice.manager.TweetManager;
+import com.kwetter.tweetservice.models.returnModels.GetTweetsFromReturnModel;
 import com.kwetter.tweetservice.models.returnModels.SendTweetReturnModel;
 import com.kwetter.tweetservice.models.submitModels.SendTweetSubmitModel;
 
@@ -72,5 +73,20 @@ public class TweetRestService {
     public ResponseEntity getMentions() throws JsonProcessingException {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(objectMapper.writeValueAsString(manager.getMentions()));
+    }
+
+    @RequestMapping(value = "/{user_id}", method = RequestMethod.GET)
+    public ResponseEntity getTweetsFromUser(@PathVariable("user_id") int user_id) throws JsonProcessingException {
+        if (user_id == 0) {
+            return new ResponseEntity<>("", HttpStatus.BAD_REQUEST);
+        }
+
+        GetTweetsFromReturnModel returnModel = manager.getTweetsFromUser(user_id);
+
+        if (returnModel.isSuccess()) {
+            return ResponseEntity.status(HttpStatus.OK).body(objectMapper.writeValueAsString(returnModel));
+        } else {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(objectMapper.writeValueAsString(returnModel));
+        }
     }
 }

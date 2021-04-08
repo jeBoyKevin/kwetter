@@ -1,6 +1,8 @@
 import {withStyles } from '@material-ui/core';
 import React, {Component} from 'react';
 import axios from 'axios';
+import Snackbar from '@material-ui/core/Snackbar';
+import Alert from '@material-ui/lab/Alert';
 
 const useStyles = (theme) => ({
     summary: {
@@ -56,11 +58,16 @@ class ProfileDetails extends Component {
             isLoaded: false,
             bioToggle: true,
             locationToggle: true,
-            websiteToggle: true
+            websiteToggle: true,
+            errorOpen: false,
+            succesOpen: false,
+            errorText: ""
             
         }
         this.toggleInput = this.toggleInput.bind(this)
         this.handleChange = this.handleChange.bind(this)
+        this.handleErrorClose = this.handleErrorClose.bind(this)
+        this.handleSuccesClose = this.handleSuccesClose.bind(this)
 
     }
 
@@ -71,6 +78,15 @@ class ProfileDetails extends Component {
         })
         
         if (response.data.success === true) {
+            if (response.data.location === null) {
+                this.setState({
+                    name: "This profile cannot be loaded",
+                    errorText: "This profile cannot be loaded",
+                    errorOpen: true
+                })
+                console.log(response.data.errorMessage);
+            }
+            console.log(response)
             this.setState ({
                 picture: response.data.picture,
                 location: response.data.location,
@@ -79,14 +95,6 @@ class ProfileDetails extends Component {
                 isLoaded: true
             });
         }
-        else {
-            this.setState({
-                name: "This profile cannot be loaded"
-            })
-            console.log(response.data.errorMessage);
-        }
-        
-
     }
 
     async changeProfile (e) {
@@ -107,13 +115,28 @@ class ProfileDetails extends Component {
                     bio: this.state.bio
                 }
             });
-            alert("Profile has been updated")
+            this.setState({
+                succesOpen: true
+            })
             }       
         else {
-            alert("You cannot change someone else's profile")
+            this.setState({
+                errorText: "You cannot change someone else's profile",
+                errorOpen: true
+            })
         } 
     }
+    handleErrorClose() {
+        this.setState({
+            errorOpen: false
+        })
+    }
 
+    handleSuccesClose() {
+        this.setState({
+            succesOpen: false
+        })
+    }
 
     toggleInput(event) {
         this.setState(prevState => ({
@@ -163,6 +186,16 @@ class ProfileDetails extends Component {
                         <input type="text" name="bio" id="bioToggle" onDoubleClick={this.toggleInput} className={classes.bioToggle} value={this.state.bio} onChange={this.handleChange} />
                     )}
                 </div>
+                <Snackbar open={this.state.succesOpen} autoHideDuration={3000} onClose={this.handleSuccesClose}>
+                    <Alert onClose={this.handleSuccesClose} severity="success">
+                    Profile has been updated
+                    </Alert>
+                </Snackbar>
+                <Snackbar open={this.state.errorOpen} autoHideDuration={8000} onClose={this.handleErrorClose}>
+                    <Alert onClose={this.handleErrorClose} severity="error">
+                        {this.state.errorText}
+                    </Alert>
+                </Snackbar>
             </div>
         )
     }
