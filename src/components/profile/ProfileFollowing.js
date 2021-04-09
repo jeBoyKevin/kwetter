@@ -47,9 +47,6 @@ class ProfileFollowing extends Component {
                 isloaded: true
             });
         }
-        else {
-            console.log(response.data.errorMessage);
-        }
     }
     render() {
         if (!this.state.isloaded) {

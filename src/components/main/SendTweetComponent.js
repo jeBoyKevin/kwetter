@@ -24,36 +24,38 @@ const useStyles = (theme) => ({
         bottom: "10px"
     }
 })
-const handleErrorOpen = () => {
-    this.setState({
-        errorOpen: true});
-  }
-  const handleErrorClose = () => {
-    this.setState({
-        errorOpen: false});
-  }
+
 class SendTweetComponent extends Component {
     constructor(props) {
         super(props);
         this.state = {
             tweet: '',
             errorOpen: false,
-            warning: ''
+            warning: '',
+            succesOpen: false
         }
         this.handleTweet = this.handleTweet.bind(this)
+        this.handleErrorClose= this.handleErrorClose.bind(this)
+        this.handleSuccesClose= this.handleSuccesClose.bind(this)
+
     }
     render() {
         const { classes } = this.props;
         return <div id="tweetComponent" className={classes.tweetComponent}>
-            <TextField autoFocus={true} aria-label="tweet" placeholder="What's on your mind" value={this.state.tweet} onChange={this.handleChange} className={classes.tweetBox} multiline/>
+        <TextField autoFocus={true} aria-label="tweet" placeholder="What's on your mind" value={this.state.tweet} onChange={this.handleChange} className={classes.tweetBox} multiline/>
             <Button variant="contained" color="primary" className={classes.sendTweet} onClick={this.handleTweet}>
                 Send Tweet
             </Button>
-            <Snackbar open={this.state.errorOpen} autoHideDuration={3000} onClose={handleErrorClose}>
-            <Alert onClose={handleErrorClose} severity="error">
-              {this.state.warning}
-            </Alert>
-          </Snackbar>
+            <Snackbar open={this.state.errorOpen} autoHideDuration={3000} onClose={this.handleErrorClose}>
+                <Alert onClose={this.handleErrorClose} severity="error">
+                    {this.state.warning}
+                </Alert>
+            </Snackbar>
+            <Snackbar open={this.state.succesOpen} autoHideDuration={3000} onClose={this.handleSuccesClose}>
+                <Alert onClose={this.handleSuccesClose} severity="success">
+                Tweet has been sent
+                </Alert>
+        </Snackbar>
         </div>
     }
 
@@ -64,24 +66,54 @@ class SendTweetComponent extends Component {
     async handleTweet (e)  {
     var user_id = 0;
     e.preventDefault();
-    console.log('Bearer ' + localStorage.getItem('token'))
     await axios.get("http://localhost:8083/user/me", { headers: { Authorization:  'Bearer ' + localStorage.getItem('token') } 
     })
     .then(response => {
         user_id = response.data.id;
+    })
+    .catch(error => {
+        localStorage.removeItem('token')
+        this.setState({warning: "You do not have the permissions to send this tweet"})
+        this.handleErrorOpen();
+        return;
     })
     axios.post('http://localhost:8079/tweet', {
       user_id: user_id,
       message: this.state.tweet
     })
     .then(response => {
-      console.log(response);
-    })
-    .catch(error => {
-      this.setState({warning: error.response.data.error})
-      handleErrorOpen();
-      })
+        this.handleSuccesOpen()
+        this.setState({
+          tweet: ""
+        })
     }
+    )
+    .catch(error => {
+        this.setState({warning: "You do not have the permissions to send this tweet"})
+        this.handleErrorOpen();
+        return;
+      })
+
+    }
+
+    handleErrorOpen() {
+        this.setState({
+            errorOpen: true});
+      }
+    handleErrorClose() {
+        this.setState({
+            errorOpen: false});
+        window.location.replace('')
+      }
+    
+    handleSuccesOpen() {
+        this.setState({
+            succesOpen: true});
+      }
+    handleSuccesClose() {
+        this.setState({
+            succesOpen: false});
+      }
 }
 
 export default withStyles(useStyles)(SendTweetComponent)

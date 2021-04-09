@@ -84,9 +84,7 @@ class ProfileDetails extends Component {
                     errorText: "This profile cannot be loaded",
                     errorOpen: true
                 })
-                console.log(response.data.errorMessage);
             }
-            console.log(response)
             this.setState ({
                 picture: response.data.picture,
                 location: response.data.location,
@@ -103,6 +101,10 @@ class ProfileDetails extends Component {
         })
         .then(response => {
             user_id = response.data.id;
+        })
+        .catch(response => {
+            localStorage.removeItem('token');
+            return;
         })
         if (user_id.toString() === this.props.id) {
             await axios({
@@ -121,7 +123,7 @@ class ProfileDetails extends Component {
             }       
         else {
             this.setState({
-                errorText: "You cannot change someone else's profile",
+                errorText: "You do not have the permissions to change this profile",
                 errorOpen: true
             })
         } 

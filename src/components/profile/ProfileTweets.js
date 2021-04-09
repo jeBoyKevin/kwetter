@@ -2,6 +2,7 @@ import {TableBody, withStyles, Table, TableCell, TableRow} from '@material-ui/co
 import React, {Component} from 'react';
 import ProfileStats from './ProfileStats';
 import axios from 'axios';
+import TweetComponent from '../tweet/TweetComponent';
 
 const useStyles = (theme) => ({
     tweet: {
@@ -68,9 +69,6 @@ class ProfileTweets extends Component {
                 isLoaded: true
             });
         }
-        else {
-            console.log(response.data.errorMessage);
-        }
         const response2 = await axios({
             method: 'get',
             url: `http://localhost:8079/tweet/${this.props.id}`
@@ -111,9 +109,7 @@ class ProfileTweets extends Component {
 
             <TableRow className={classes.tweet} key={index} style ={ index % 2? { background : "#e8e8e8" }:{ background : "white" }}>
                 <TableCell className={classes.tweetCell}>
-                    <p className={classes.tweetText}>{tweet.message}</p>
-                    <p className={classes.tweetDate}>{tweet.date}</p>
-                    <p className={classes.tweetDate}>{tweet.likes}</p>
+                    <TweetComponent user_id={tweet.user_id} message={tweet.message} date={tweet.date} likes={tweet.likes} tweet_id={tweet.tweet_id}></TweetComponent>
                 </TableCell>
             </TableRow>
             )}

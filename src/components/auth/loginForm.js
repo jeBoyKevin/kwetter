@@ -45,6 +45,14 @@ export default function FormDialog() {
   const handleChange = name => e => {
     setDetails({ ...details, [name]: e.target.value });
 };
+const buttonStyle = {
+  position: "absolute",
+  top: "50%",
+  transform: "translateY(-50%)",
+  height: "50px",
+  width: "100px",
+  right: "25px"
+}
 
 
   const handleLogin = async (e) => {
@@ -56,7 +64,6 @@ export default function FormDialog() {
       password: password
     })
     .then(response => {
-      console.log(response)
       localStorage.setItem('token', response.data)
       handleClose();
       window.location.replace('');
@@ -84,7 +91,6 @@ export default function FormDialog() {
       ]
     })
     .then(response => {
-      console.log(response);
       localStorage.setItem('token', response.data)
       handleClose();
     })
@@ -96,7 +102,7 @@ export default function FormDialog() {
 
   return (
     <div>
-      <Button variant="outlined" color="primary" onClick={handleClickOpen}>
+      <Button variant="contained" style={buttonStyle} onClick={handleClickOpen}>
         Login
       </Button>
       <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">

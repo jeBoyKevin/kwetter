@@ -87,6 +87,8 @@ public class TweetDatabaseContext extends AbstractTweetContext {
 
                 while (rs.next()) {
                     Tweet tweet = new Tweet();
+                    tweet.setTweet_id(rs.getInt("id"));
+                    tweet.setUser_id(rs.getInt("user_id"));
                     tweet.setMessage(rs.getString("message"));
                     tweet.setDate(rs.getString("date"));
                     tweet.setLikes(rs.getInt("likes"));
