@@ -13,6 +13,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -62,6 +65,14 @@ public class UserService {
 
   public Account whoami(HttpServletRequest req) {
     return userRepository.findByUsername(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(req)));
+  }
+
+  public List<Account> getUsernames(String token, List<Integer> ids) {
+    List<Account> allAccounts = new ArrayList<>();
+    for (int i=0; i < ids.size(); i++){
+      userRepository.findById(ids.get(i)).ifPresent(allAccounts::add);
+    }
+      return allAccounts;
   }
 
   public String refresh(String username) {

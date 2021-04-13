@@ -11,6 +11,8 @@ public interface UserRepository extends JpaRepository<Account, Integer> {
 
   Account findByUsername(String username);
 
+  Account findById(int id);
+
   @Transactional
   void deleteByUsername(String username);
 

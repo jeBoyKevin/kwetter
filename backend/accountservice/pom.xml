@@ -47,6 +47,19 @@
 			<artifactId>mssql-jdbc</artifactId>
 			<version>9.2.1.jre11</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.springframework.amqp/spring-amqp -->
+		<dependency>
+			<groupId>org.springframework.amqp</groupId>
+			<artifactId>spring-amqp</artifactId>
+			<version>2.3.6</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.springframework.amqp/spring-rabbit -->
+		<dependency>
+			<groupId>org.springframework.amqp</groupId>
+			<artifactId>spring-rabbit</artifactId>
+			<version>2.3.6</version>
+		</dependency>
+
 		<dependency>
 			<!-- Setup Spring Boot -->
 			<groupId>org.springframework.boot</groupId>
@@ -56,6 +69,10 @@
 			<!-- JPA Data (Repositories, Entities, Hibernate, etc..) -->
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.rabbitmq</groupId>
+			<artifactId>amqp-client</artifactId>
 		</dependency>
 		<dependency>
 			<!-- Starter for using Spring Security -->
