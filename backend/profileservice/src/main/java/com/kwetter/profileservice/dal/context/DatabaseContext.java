@@ -1,9 +1,7 @@
 package com.kwetter.profileservice.dal.context;
 
 import com.kwetter.profileservice.dal.interfaces.AbstractContext;
-import com.kwetter.profileservice.models.returnModels.GetProfileReturnModel;
-import com.kwetter.profileservice.models.returnModels.UpdateProfileReturnModel;
-import com.kwetter.profileservice.models.returnModels.UploadPictureReturnModel;
+import com.kwetter.profileservice.models.returnModels.*;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -22,12 +20,12 @@ public class DatabaseContext extends AbstractContext {
     }
 
 
-    public GetProfileReturnModel getProfile(int user_id) {
+    public GetProfileReturnModel getProfile(String profile_name) {
         GetProfileReturnModel returnModel = new GetProfileReturnModel();
         try (Connection connection = DriverManager.getConnection(connectionUrl)) {
             try {
                 CallableStatement cstmnt = connection.prepareCall("{CALL getProfile(?)}");
-                cstmnt.setInt(1, user_id);
+                cstmnt.setString(1, profile_name);
 
                 cstmnt.execute();
                 ResultSet rs = cstmnt.getResultSet();
@@ -101,5 +99,112 @@ public class DatabaseContext extends AbstractContext {
     @Override
     public String followProfile() {
         return null;
+    }
+
+    public SendFollowReturnModel followUser(int user_id, int followed_user_id) {
+        SendFollowReturnModel returnModel = new SendFollowReturnModel();
+        try (Connection connection = DriverManager.getConnection(connectionUrl)) {
+            try {
+                CallableStatement cstmnt = connection.prepareCall("{CALL followUser(?,?)}");
+                cstmnt.setInt(1, user_id);
+                cstmnt.setInt(2, followed_user_id);
+
+                cstmnt.executeUpdate();
+
+                returnModel.setSuccess(true);
+            } catch (SQLException e) {
+                returnModel.setSuccess(false);
+                returnModel.setErrorMessage(e.toString());
+            }
+        } catch (SQLException e) {
+            returnModel.setErrorMessage(e.getMessage());
+            returnModel.setSuccess(false);
+        }
+        return returnModel;
+    }
+
+    @Override
+    public GetFollowersReturnModel getFollowers(int user_id) {
+        GetFollowersReturnModel returnModel = new GetFollowersReturnModel();
+        try (Connection connection = DriverManager.getConnection(connectionUrl)) {
+            try {
+                CallableStatement cstmnt = connection.prepareCall("{CALL getFollowers(?)}");
+                cstmnt.setInt(1, user_id);
+                cstmnt.execute();
+                ResultSet rs = cstmnt.getResultSet();
+                while (rs.next()) {
+                    returnModel.addFollower(rs.getString("profile_name"));
+                }
+
+                returnModel.setSuccess(true);
+            } catch (SQLException e) {
+                returnModel.setSuccess(false);
+                returnModel.setErrorMessage(e.toString());
+            }
+        } catch (SQLException e) {
+            returnModel.setErrorMessage(e.getMessage());
+            returnModel.setSuccess(false);
+        }
+        return returnModel;
+    }
+
+    @Override
+    public GetFollowedReturnModel getFollowed(int user_id) {
+        GetFollowedReturnModel returnModel = new GetFollowedReturnModel();
+        try (Connection connection = DriverManager.getConnection(connectionUrl)) {
+            try {
+                CallableStatement cstmnt = connection.prepareCall("{CALL getFollowed(?)}");
+                cstmnt.setInt(1, user_id);
+                cstmnt.execute();
+                ResultSet rs = cstmnt.getResultSet();
+                while (rs.next()) {
+                    returnModel.addFollowed(rs.getString("profile_name"));
+                }
+
+                returnModel.setSuccess(true);
+            } catch (SQLException e) {
+                returnModel.setSuccess(false);
+                returnModel.setErrorMessage(e.toString());
+            }
+        } catch (SQLException e) {
+            returnModel.setErrorMessage(e.getMessage());
+            returnModel.setSuccess(false);
+        }
+        return returnModel;
+    }
+
+    @Override
+    public GetStatsReturnModel getStats(int user_id) {
+        GetStatsReturnModel returnModel = new GetStatsReturnModel();
+        try (Connection connection = DriverManager.getConnection(connectionUrl)) {
+            try {
+                CallableStatement cstmnt = connection.prepareCall("{CALL getCountFollowed(?)}");
+                cstmnt.setInt(1, user_id);
+
+                cstmnt.execute();
+                ResultSet rs = cstmnt.getResultSet();
+                while (rs.next()) {
+                    returnModel.setFollowed(rs.getInt("followed"));
+                }
+
+                CallableStatement cstmnt2 = connection.prepareCall("{CALL getCountFollowers(?)}");
+                cstmnt2.setInt(1, user_id);
+
+                cstmnt2.execute();
+                ResultSet rs2 = cstmnt2.getResultSet();
+                while (rs2.next()) {
+                    returnModel.setFollowers(rs2.getInt("followers"));
+                }
+
+                returnModel.setSuccess(true);
+            } catch (SQLException e) {
+                returnModel.setSuccess(false);
+                returnModel.setErrorMessage(e.toString());
+            }
+        } catch (SQLException e) {
+            returnModel.setErrorMessage(e.getMessage());
+            returnModel.setSuccess(false);
+        }
+        return returnModel;
     }
 }

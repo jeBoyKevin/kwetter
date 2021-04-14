@@ -1,7 +1,6 @@
 package com.kwetter.accountservice.rabbitMQ;
 
 import com.kwetter.accountservice.model.Account;
-import com.kwetter.accountservice.model.SeriAccount;
 
 import java.util.ArrayList;
 import java.util.List;

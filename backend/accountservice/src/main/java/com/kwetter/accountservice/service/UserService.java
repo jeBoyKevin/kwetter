@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UserService {
@@ -35,28 +34,28 @@ public class UserService {
   public String signin(String username, String password) {
     try {
       authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
-      return jwtTokenProvider.createToken(username, userRepository.findByUsername(username).getRoles());
+      return jwtTokenProvider.createToken(username, userRepository.findByEmail(username).getRoles());
     } catch (AuthenticationException e) {
       throw new CustomException("Invalid username/password supplied", HttpStatus.UNPROCESSABLE_ENTITY);
     }
   }
 
   public String signup(Account account) {
-    if (!userRepository.existsByUsername(account.getUsername())) {
+    if (!userRepository.existsByEmail(account.getEmail())) {
       account.setPassword(passwordEncoder.encode(account.getPassword()));
       userRepository.save(account);
-      return jwtTokenProvider.createToken(account.getUsername(), account.getRoles());
+      return jwtTokenProvider.createToken(account.getEmail(), account.getRoles());
     } else {
       throw new CustomException("Username is already in use", HttpStatus.UNPROCESSABLE_ENTITY);
     }
   }
 
   public void delete(String username) {
-    userRepository.deleteByUsername(username);
+    userRepository.deleteByEmail(username);
   }
 
   public Account search(String username) {
-    Account account = userRepository.findByUsername(username);
+    Account account = userRepository.findByEmail(username);
     if (account == null) {
       throw new CustomException("The user doesn't exist", HttpStatus.NOT_FOUND);
     }
@@ -64,7 +63,7 @@ public class UserService {
   }
 
   public Account whoami(HttpServletRequest req) {
-    return userRepository.findByUsername(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(req)));
+    return userRepository.findByEmail(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(req)));
   }
 
   public List<Account> getUsernames(List<Integer> ids) {
@@ -76,7 +75,7 @@ public class UserService {
   }
 
   public String refresh(String username) {
-    return jwtTokenProvider.createToken(username, userRepository.findByUsername(username).getRoles());
+    return jwtTokenProvider.createToken(username, userRepository.findByEmail(username).getRoles());
   }
 
 
