@@ -1,11 +1,12 @@
-package com.kwetter.accountservice.rabbitMQ;
+package com.kwetter.followservice.rabbitMQ.models;
 
-import com.kwetter.accountservice.model.Account;
+
+import com.kwetter.followservice.models.Account;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class sendObject {
+public class RabbitReturnModel {
     private List<Account> accounts = new ArrayList();
 
     public void setAccounts(List<Account> accounts) {
