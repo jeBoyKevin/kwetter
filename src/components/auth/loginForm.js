@@ -21,7 +21,8 @@ export default function FormDialog() {
 
   const [details, setDetails] = useState({
     username: '',
-    password: ''
+    password: '',
+    email: ''
   });
   const [errorOpen, seterrorOpen] = useState(false);
   const [error, setError] = useState({
@@ -57,11 +58,11 @@ const buttonStyle = {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    const { username, password } = details;
+    const {password, email } = details;
 
-    axios.post('http://localhost:8083/user/signin?username='+ username +"&password=" + password, {
-      username: username,
-      password: password
+    axios.post('http://localhost:8083/user/signin?&username=' + email +"&password=" + password, {
+      username: email,
+      password: password,
     })
     .then(response => {
       localStorage.setItem('token', response.data)
@@ -81,10 +82,16 @@ const buttonStyle = {
 
   const handleRegister = async (e) => {
     e.preventDefault();
-    const { username, password } = details;
-
-    axios.post('http://localhost:8083/user/signup', {
-      username: username,
+    
+    const { username, password, email } = details;
+    console.log(username)
+    if (username === "") {
+      setError({warning: "Fill in a username"})
+      handleErrorOpen();
+      return;
+    }
+    await axios.post('http://localhost:8083/user/signup', {
+      username: email,
       password: password,
       roles: [
         "ROLE_CLIENT"
@@ -92,12 +99,28 @@ const buttonStyle = {
     })
     .then(response => {
       localStorage.setItem('token', response.data)
-      handleClose();
+      console.log(response.status)
+      if (response.status === 200)
+      {
+        axios.post('http://localhost:8079/profile', {
+          username: username
+        })
+        .then(response => {
+          handleClose();
+          window.location.replace('')
+        })
+        .catch(error => {
+          setError({warning: error.response.data.error})
+          handleErrorOpen();
+          })
+      }
     })
     .catch(error => {
       setError({warning: error.response.data.error})
       handleErrorOpen();
       })
+
+    
   };
 
   return (
@@ -120,6 +143,17 @@ const buttonStyle = {
             type="text"
             value={details.username}
             onChange={handleChange('username')}
+            fullWidth
+          />
+          <TextField
+            autoFocus
+            margin="dense"
+            id="email"
+            label="Email"
+            name="email"
+            type="email"
+            value={details.email}
+            onChange={handleChange('email')}
             fullWidth
           />
           <TextField

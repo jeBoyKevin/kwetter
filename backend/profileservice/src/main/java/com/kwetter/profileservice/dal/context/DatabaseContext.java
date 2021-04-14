@@ -209,4 +209,26 @@ public class DatabaseContext extends AbstractContext {
         }
         return returnModel;
     }
+
+    @Override
+    public UploadPictureReturnModel createProfile(String username) {
+        UploadPictureReturnModel returnModel = new UploadPictureReturnModel();
+        try (Connection connection = DriverManager.getConnection(connectionUrl)) {
+            try {
+                CallableStatement cstmnt = connection.prepareCall("{CALL createProfile(?)}");
+                cstmnt.setString(1, username);
+
+                cstmnt.executeUpdate();
+
+                returnModel.setSuccess(true);
+            } catch (SQLException e) {
+                returnModel.setSuccess(false);
+                returnModel.setErrorMessage(e.toString());
+            }
+        } catch (SQLException e) {
+            returnModel.setErrorMessage(e.getMessage());
+            returnModel.setSuccess(false);
+        }
+        return returnModel;
+    }
 }

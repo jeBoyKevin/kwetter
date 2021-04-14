@@ -20,7 +20,7 @@ public class Account {
 
   @Size(min = 4, max = 255, message = "Minimum email length: 4 characters")
   @Column(unique = true, nullable = false)
-  private String email;
+  private String username;
 
   @Size(min = 8, message = "Minimum password length: 8 characters")
   private String password;
@@ -34,14 +34,6 @@ public class Account {
 
   public void setId(Integer id) {
     this.id = id;
-  }
-
-  public String getEmail() {
-    return email;
-  }
-
-  public void setEmail(String username) {
-    this.email = username;
   }
 
 
@@ -61,4 +53,11 @@ public class Account {
     this.roles = roles;
   }
 
+  public String getUsername() {
+    return username;
+  }
+
+  public void setUsername(String username) {
+    this.username = username;
+  }
 }

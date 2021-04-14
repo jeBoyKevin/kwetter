@@ -101,7 +101,7 @@ class ProfileTweets extends Component {
         const { classes } = this.props;
         
         return  <div className={classes.wrapperDiv}>
-            <ProfileStats id={this.props.id} parentMethod={this.parentMethod}/>
+            <ProfileStats id={this.props.profile_name} parentMethod={this.parentMethod}/>
             <div className={classes.profileTweets}>
             <Table id="uiTable" className={classes.table}>
             

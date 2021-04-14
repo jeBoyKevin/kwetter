@@ -11,4 +11,6 @@ public abstract class AbstractContext {
     public abstract GetFollowersReturnModel getFollowers(String profile_name);
     public abstract GetFollowedReturnModel getFollowed(String profile_name);
     public abstract GetStatsReturnModel getStats(String profile_name);
+
+    public abstract UploadPictureReturnModel createProfile(String username);
 }

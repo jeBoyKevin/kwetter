@@ -72,14 +72,25 @@ class ProfileDetails extends Component {
     }
 
     async componentDidMount() {
-        this.setState ({
-            profile_name: this.props.profile_name,
-            picture: this.props.picture,
-            location: this.props.location,
-            website: this.props.website,
-            bio: this.props.bio,
-            isLoaded: true
-        });
+        if (this.props.picture !== null)
+        {
+            this.setState ({
+                profile_name: this.props.profile_name,
+                picture: this.props.picture,
+                location: this.props.location,
+                website: this.props.website,
+                bio: this.props.bio,
+                isLoaded: true
+            });
+        }
+        else {
+            this.setState({
+                errorText: "This profile doesn't exist",
+                errorOpen: true,
+                isLoaded: true
+            })
+        }
+
     }
 
     async changeProfile (e) {

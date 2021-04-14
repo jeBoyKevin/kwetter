@@ -7,13 +7,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UserRepository extends JpaRepository<Account, Integer> {
 
-  boolean existsByEmail(String email);
+  boolean existsByUsername(String username);
 
-  Account findByEmail(String email);
+  Account findByUsername(String username);
 
   Account findById(int id);
 
   @Transactional
-  void deleteByEmail(String email);
+  void deleteByUsername(String username);
 
 }

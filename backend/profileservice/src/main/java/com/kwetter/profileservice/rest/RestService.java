@@ -4,10 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kwetter.profileservice.manager.Manager;
 import com.kwetter.profileservice.models.returnModels.*;
-import com.kwetter.profileservice.models.submitModels.GetProfileSubmitModel;
-import com.kwetter.profileservice.models.submitModels.SendFollowSubmitModel;
-import com.kwetter.profileservice.models.submitModels.UpdateProfileSubmitModel;
-import com.kwetter.profileservice.models.submitModels.UploadPictureSubmitModel;
+import com.kwetter.profileservice.models.submitModels.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -45,6 +42,27 @@ public class RestService {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(objectMapper.writeValueAsString(returnModel));
         }
 
+    }
+
+    @RequestMapping(value = "",
+                    method = RequestMethod.POST,
+                    consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity createProfile(@RequestBody String json) throws JsonProcessingException {
+        CreateProfileSubmitModel submitModel = objectMapper.readValue(json, CreateProfileSubmitModel.class);
+
+        String username = submitModel.getUsername();
+
+        if (username.isEmpty()) {
+            return new ResponseEntity<>("", HttpStatus.BAD_REQUEST);
+        }
+
+        UploadPictureReturnModel returnModel = manager.createProfile(username);
+        if (returnModel.isSuccess()) {
+            return ResponseEntity.status(HttpStatus.OK).body(objectMapper.writeValueAsString(returnModel));
+        }
+        else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(objectMapper.writeValueAsString(returnModel));
+        }
     }
 
     @RequestMapping(value =  "",

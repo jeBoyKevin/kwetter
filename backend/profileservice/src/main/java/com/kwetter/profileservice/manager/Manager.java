@@ -31,4 +31,8 @@ public class Manager {
     }
 
     public GetStatsReturnModel getStats(String profile_name) {return profileRepo.getStats(profile_name);}
+
+    public UploadPictureReturnModel createProfile(String username) {
+        return profileRepo.createProfile(username);
+    }
 }

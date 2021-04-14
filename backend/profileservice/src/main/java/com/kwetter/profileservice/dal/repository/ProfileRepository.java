@@ -42,4 +42,7 @@ public class ProfileRepository {
 
     public GetStatsReturnModel getStats(String profile_name) { return tweetContext.getStats(profile_name);}
 
+    public UploadPictureReturnModel createProfile(String username) {
+        return tweetContext.createProfile(username);
+    }
 }
