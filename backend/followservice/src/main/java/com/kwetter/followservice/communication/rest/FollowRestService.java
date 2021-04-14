@@ -8,18 +8,18 @@ import com.kwetter.followservice.models.returnModels.GetFollowedReturnModel;
 import com.kwetter.followservice.models.returnModels.GetFollowersReturnModel;
 import com.kwetter.followservice.models.returnModels.GetStatsReturnModel;
 import com.kwetter.followservice.models.returnModels.SendFollowReturnModel;
-import com.kwetter.followservice.models.submitModels.GetFollowedSubmitModel;
-import com.kwetter.followservice.models.submitModels.GetStatsSubmitModel;
 import com.kwetter.followservice.models.submitModels.SendFollowSubmitModel;
 
-import com.kwetter.followservice.models.submitModels.GetFollowersSubmitModel;
+import com.kwetter.followservice.rabbitMQ.Recv;
+import com.kwetter.followservice.rabbitMQ.models.RabbitSubmitModel;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.print.attribute.standard.Media;
+import java.util.concurrent.TimeUnit;
 
 @RestController
 public class FollowRestService {
@@ -28,6 +28,13 @@ public class FollowRestService {
     private FollowManager manager = new FollowManager();
 
     private ObjectMapper objectMapper = new ObjectMapper();
+    private final RabbitTemplate rabbitTemplate;
+    private final Recv receiver;
+
+    public FollowRestService(Recv receiver, RabbitTemplate rabbitTemplate) {
+        this.receiver = receiver;
+        this.rabbitTemplate = rabbitTemplate;
+    }
 
     @RequestMapping(value =  "",
                     method = RequestMethod.POST,
@@ -76,6 +83,13 @@ public class FollowRestService {
         }
 
         GetFollowedReturnModel returnModel = manager.getFollowed(user_id);
+
+        RabbitSubmitModel submitModel = new RabbitSubmitModel();
+        submitModel.setUserids(returnModel.getFollowed());
+        submitModel.setQueue_name("follow-service-exchange");
+        rabbitTemplate.convertAndSend("account-service-exchange", "foo.bar.baz",
+                objectMapper.writeValueAsString(submitModel));
+
 
         if (returnModel.isSuccess()) {
             return ResponseEntity.status(HttpStatus.OK).body(objectMapper.writeValueAsString(returnModel));

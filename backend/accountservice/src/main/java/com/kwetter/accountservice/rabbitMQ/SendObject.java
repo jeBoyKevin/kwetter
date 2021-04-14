@@ -1,0 +1,19 @@
+package com.kwetter.accountservice.rabbitMQ;
+
+import com.kwetter.accountservice.model.Account;
+import com.kwetter.accountservice.model.SeriAccount;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class SendObject {
+    private List<Account> accounts = new ArrayList();
+
+    public void setAccounts(List<Account> accounts) {
+        this.accounts = accounts;
+    }
+
+    public List<Account> getAccounts() {
+        return accounts;
+    }
+}

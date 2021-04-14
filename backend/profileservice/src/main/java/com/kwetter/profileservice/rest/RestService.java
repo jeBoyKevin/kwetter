@@ -41,7 +41,7 @@ public class RestService {
         UploadPictureReturnModel returnModel = manager.uploadPicture(user_id, picture);
         if (returnModel.isSuccess()) {
             return ResponseEntity.status(HttpStatus.OK).body(objectMapper.writeValueAsString(returnModel));
-        }
+        }g
         else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(objectMapper.writeValueAsString(returnModel));
         }

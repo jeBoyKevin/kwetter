@@ -67,7 +67,7 @@ public class UserService {
     return userRepository.findByUsername(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(req)));
   }
 
-  public List<Account> getUsernames(String token, List<Integer> ids) {
+  public List<Account> getUsernames(List<Integer> ids) {
     List<Account> allAccounts = new ArrayList<>();
     for (int i=0; i < ids.size(); i++){
       userRepository.findById(ids.get(i)).ifPresent(allAccounts::add);
