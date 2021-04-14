@@ -1,7 +1,4 @@
-#
-# Package stage
-#
-FROM openjdk:11-jre-slim
-COPY --from=build /home/app/target/demo-0.0.1-SNAPSHOT.jar /usr/local/lib/demo.jar
+FROM java:8
 EXPOSE 8080
-ENTRYPOINT ["java","-jar","/usr/local/lib/demo.jar"]
+ADD /target/ProfileService-0.0.1-SNAPSHOT.jar ProfileService-0.0.1-SNAPSHOT.jar
+ENTRYPOINT ["java","-jar","ProfileService-0.0.1-SNAPSHOT.jar"]
