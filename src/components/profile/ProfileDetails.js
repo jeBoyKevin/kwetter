@@ -50,7 +50,7 @@ class ProfileDetails extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            name: "Undefined",
+            profile_name: "",
             picture: "",
             location: "",
             website: "",
@@ -72,27 +72,14 @@ class ProfileDetails extends Component {
     }
 
     async componentDidMount() {
-        const response = await axios({
-            method: 'get',
-            url: `http://localhost:8079/profile/${this.props.id}`
-        })
-        
-        if (response.data.success === true) {
-            if (response.data.location === null) {
-                this.setState({
-                    name: "This profile cannot be loaded",
-                    errorText: "This profile cannot be loaded",
-                    errorOpen: true
-                })
-            }
-            this.setState ({
-                picture: response.data.picture,
-                location: response.data.location,
-                website: response.data.website,
-                bio: response.data.bio,
-                isLoaded: true
-            });
-        }
+        this.setState ({
+            profile_name: this.props.profile_name,
+            picture: this.props.picture,
+            location: this.props.location,
+            website: this.props.website,
+            bio: this.props.bio,
+            isLoaded: true
+        });
     }
 
     async changeProfile (e) {
@@ -165,11 +152,11 @@ class ProfileDetails extends Component {
         return (
             <div id="profileDetails" className={classes.profileDetails}>
                 <div id="summary" className={classes.summary}>
-                    <img src={this.state.picture} alt={'picture of ' + this.state.name} className={classes.profilePicture} />
-                    <h1 className={classes.h1}>{this.state.name}</h1>
+                    <img src={this.state.picture} alt={'picture of ' + this.state.profile_name} className={classes.profilePicture} />
+                    <h1 className={classes.h1}>{this.state.profile_name}</h1>
                 </div>
                 <div id="details" className={classes.details}>
-                    <p><b>Name:</b> {this.state.name}</p>
+                    <p><b>Name:</b> {this.state.profile_name}</p>
                     {this.state.locationToggle ? (
                     <p name="location" id="locationToggle" onDoubleClick={this.toggleInput}><b>Location:</b> {this.state.location}</p>
 

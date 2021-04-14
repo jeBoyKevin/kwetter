@@ -38,7 +38,7 @@ class ProfileFollowing extends Component {
     async componentDidMount() {
         const response = await axios({
             method: 'get',
-            url: `http://localhost:8079/follow/followed/${this.props.id}`
+            url: `http://localhost:8079/profile/followed/${this.props.profile_name}`
         })
         
         if (response.data.success === true) {
@@ -61,7 +61,7 @@ class ProfileFollowing extends Component {
     
             <TableRow className={classes.tweet}  key={follow} style ={ ((index > 3 && index < 8) || (index > 11 && index < 16)) ? { background : "#e8e8e8" }:{ background : "white" }}>
                 <TableCell className={classes.tweetCell}>
-                    <p className={classes.link}>{follow}</p>
+                    <a href={'../profile/' + follow} className={classes.link}>{follow}</a>
                 </TableCell>
             </TableRow>
             

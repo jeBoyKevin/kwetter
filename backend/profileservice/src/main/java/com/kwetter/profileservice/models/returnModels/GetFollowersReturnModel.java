@@ -7,6 +7,7 @@ public class GetFollowersReturnModel {
 
     private boolean success;
     private String errorMessage;
+    private int user_id;
     private List<String> followers = new ArrayList<>();
 
     public boolean isSuccess() {
@@ -31,5 +32,13 @@ public class GetFollowersReturnModel {
 
     public void addFollower(String follower) {
         this.followers.add(follower);
+    }
+
+    public int getUser_id() {
+        return user_id;
+    }
+
+    public void setUser_id(int user_id) {
+        this.user_id = user_id;
     }
 }

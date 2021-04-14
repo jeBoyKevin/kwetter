@@ -30,8 +30,10 @@ public class DatabaseContext extends AbstractContext {
                 cstmnt.execute();
                 ResultSet rs = cstmnt.getResultSet();
                 if (rs.next()) {
+                    returnModel.setUser_id(rs.getInt("user_id"));
                     returnModel.setBio(rs.getString("bio"));
                     returnModel.setLocation(rs.getString("location"));
+                    returnModel.setProfile_name(rs.getString("profile_name"));
                     returnModel.setPicture(rs.getString("picture"));
                     returnModel.setWebsite(rs.getString("website"));
                 }
@@ -124,12 +126,12 @@ public class DatabaseContext extends AbstractContext {
     }
 
     @Override
-    public GetFollowersReturnModel getFollowers(int user_id) {
+    public GetFollowersReturnModel getFollowers(String profile_name) {
         GetFollowersReturnModel returnModel = new GetFollowersReturnModel();
         try (Connection connection = DriverManager.getConnection(connectionUrl)) {
             try {
                 CallableStatement cstmnt = connection.prepareCall("{CALL getFollowers(?)}");
-                cstmnt.setInt(1, user_id);
+                cstmnt.setString(1, profile_name);
                 cstmnt.execute();
                 ResultSet rs = cstmnt.getResultSet();
                 while (rs.next()) {
@@ -149,12 +151,12 @@ public class DatabaseContext extends AbstractContext {
     }
 
     @Override
-    public GetFollowedReturnModel getFollowed(int user_id) {
+    public GetFollowedReturnModel getFollowed(String profile_name) {
         GetFollowedReturnModel returnModel = new GetFollowedReturnModel();
         try (Connection connection = DriverManager.getConnection(connectionUrl)) {
             try {
                 CallableStatement cstmnt = connection.prepareCall("{CALL getFollowed(?)}");
-                cstmnt.setInt(1, user_id);
+                cstmnt.setString(1, profile_name);
                 cstmnt.execute();
                 ResultSet rs = cstmnt.getResultSet();
                 while (rs.next()) {
@@ -174,12 +176,12 @@ public class DatabaseContext extends AbstractContext {
     }
 
     @Override
-    public GetStatsReturnModel getStats(int user_id) {
+    public GetStatsReturnModel getStats(String profile_name) {
         GetStatsReturnModel returnModel = new GetStatsReturnModel();
         try (Connection connection = DriverManager.getConnection(connectionUrl)) {
             try {
                 CallableStatement cstmnt = connection.prepareCall("{CALL getCountFollowed(?)}");
-                cstmnt.setInt(1, user_id);
+                cstmnt.setString(1, profile_name);
 
                 cstmnt.execute();
                 ResultSet rs = cstmnt.getResultSet();
@@ -188,7 +190,7 @@ public class DatabaseContext extends AbstractContext {
                 }
 
                 CallableStatement cstmnt2 = connection.prepareCall("{CALL getCountFollowers(?)}");
-                cstmnt2.setInt(1, user_id);
+                cstmnt2.setString(1, profile_name);
 
                 cstmnt2.execute();
                 ResultSet rs2 = cstmnt2.getResultSet();

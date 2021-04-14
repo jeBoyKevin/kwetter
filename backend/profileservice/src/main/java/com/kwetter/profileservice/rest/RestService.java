@@ -110,13 +110,13 @@ public class RestService {
         }
     }
 
-    @RequestMapping(value =  "/follower/{user_id}", method = RequestMethod.GET)
-    public ResponseEntity getFollowers(@PathVariable("user_id") int user_id) throws JsonProcessingException {
-        if (user_id == 0) {
+    @RequestMapping(value =  "/follower/{profile_name}", method = RequestMethod.GET)
+    public ResponseEntity getFollowers(@PathVariable("profile_name") String profile_name) throws JsonProcessingException {
+        if (profile_name.isEmpty()) {
             return new ResponseEntity<>("", HttpStatus.BAD_REQUEST);
         }
 
-        GetFollowersReturnModel returnModel = manager.getFollowers(user_id);
+        GetFollowersReturnModel returnModel = manager.getFollowers(profile_name);
 
         if (returnModel.isSuccess()) {
             return ResponseEntity.status(HttpStatus.OK).body(objectMapper.writeValueAsString(returnModel));
@@ -126,13 +126,13 @@ public class RestService {
         }
     }
 
-    @RequestMapping(value =  "/followed/{user_id}", method = RequestMethod.GET)
-    public ResponseEntity getFollowed(@PathVariable("user_id") int user_id) throws JsonProcessingException {
-        if (user_id == 0) {
+    @RequestMapping(value =  "/followed/{profile_name}", method = RequestMethod.GET)
+    public ResponseEntity getFollowed(@PathVariable("profile_name") String profile_name) throws JsonProcessingException {
+        if (profile_name.isEmpty()) {
             return new ResponseEntity<>("", HttpStatus.BAD_REQUEST);
         }
 
-        GetFollowedReturnModel returnModel = manager.getFollowed(user_id);
+        GetFollowedReturnModel returnModel = manager.getFollowed(profile_name);
 
 
         if (returnModel.isSuccess()) {
@@ -143,13 +143,13 @@ public class RestService {
         }
     }
 
-    @RequestMapping(value =  "/stats/{user_id}", method = RequestMethod.GET)
-    public ResponseEntity getStats(@PathVariable("user_id") int user_id) throws JsonProcessingException {
-        if (user_id == 0) {
+    @RequestMapping(value =  "/stats/{profile_name}", method = RequestMethod.GET)
+    public ResponseEntity getStats(@PathVariable("profile_name") String profile_name) throws JsonProcessingException {
+        if (profile_name.isEmpty()) {
             return new ResponseEntity<>("", HttpStatus.BAD_REQUEST);
         }
 
-        GetStatsReturnModel returnModel = manager.getStats(user_id);
+        GetStatsReturnModel returnModel = manager.getStats(profile_name);
 
         if (returnModel.isSuccess()) {
             return ResponseEntity.status(HttpStatus.OK).body(objectMapper.writeValueAsString(returnModel));

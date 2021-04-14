@@ -54,13 +54,14 @@ class ProfileTweets extends Component {
     state = {
         tweets: [],
         followers: [],
-        isloaded: false
+        isloaded: false,
+        profileId: 0
     }
 
     async componentDidMount() {
         const response = await axios({
             method: 'get',
-            url: `http://localhost:8079/follow/follower/${this.props.id}`
+            url: `http://localhost:8079/profile/follower/${this.props.profile_name}`
         })
         
         if (response.data.success === true) {
@@ -71,7 +72,7 @@ class ProfileTweets extends Component {
         }
         const response2 = await axios({
             method: 'get',
-            url: `http://localhost:8079/tweet/${this.props.id}`
+            url: `http://localhost:8079/tweet/${this.props.profile_id}`
         })
         if (response2.data.success === true) {
             this.setState({
@@ -124,7 +125,7 @@ class ProfileTweets extends Component {
 
                 <TableRow className={classes.tweet}  key={follower} style ={ index % 2? { background : "#e8e8e8" }:{ background : "white" }}>
                     <TableCell className={classes.tweetCell}>
-                        <p className={classes.tweetText}>{follower}</p>
+                        <a href={'../profile/' + follower} className={classes.tweetText}>{follower}</a>
                     </TableCell>
                 </TableRow>
                 )}

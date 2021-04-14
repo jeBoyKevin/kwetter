@@ -1,7 +1,9 @@
 package com.kwetter.profileservice.models.returnModels;
 
 public class GetProfileReturnModel {
+    private int user_id;
     private String location;
+    private String profile_name;
     private String website;
     private String bio;
     private String picture;
@@ -54,5 +56,21 @@ public class GetProfileReturnModel {
 
     public void setErrorMessage(String errorMessage) {
         this.errorMessage = errorMessage;
+    }
+
+    public String getProfile_name() {
+        return profile_name;
+    }
+
+    public void setProfile_name(String profile_name) {
+        this.profile_name = profile_name;
+    }
+
+    public int getUser_id() {
+        return user_id;
+    }
+
+    public void setUser_id(int user_id) {
+        this.user_id = user_id;
     }
 }

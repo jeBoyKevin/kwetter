@@ -22,13 +22,13 @@ public class Manager {
         return profileRepo.followUser(user_id, followed_user_id);
     }
 
-    public GetFollowersReturnModel getFollowers(int user_id) {
-        return profileRepo.getFollowers(user_id);
+    public GetFollowersReturnModel getFollowers(String profile_name) {
+        return profileRepo.getFollowers(profile_name);
     }
 
-    public GetFollowedReturnModel getFollowed(int user_id) {
-        return profileRepo.getFollowed(user_id);
+    public GetFollowedReturnModel getFollowed(String profile_name) {
+        return profileRepo.getFollowed(profile_name);
     }
 
-    public GetStatsReturnModel getStats(int user_id) {return profileRepo.getStats(user_id);}
+    public GetStatsReturnModel getStats(String profile_name) {return profileRepo.getStats(profile_name);}
 }
