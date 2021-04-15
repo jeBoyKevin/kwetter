@@ -1,5 +1,6 @@
 package com.kwetter.profileservice;
 
+import com.kwetter.profileservice.rabbitMQ.Tut6Client;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Configuration;
@@ -12,6 +13,8 @@ public class ProfileserviceApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(ProfileserviceApplication.class, args);
+        Tut6Client client = new Tut6Client();
+        client.send();
     }
 
 
