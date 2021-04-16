@@ -1,6 +1,7 @@
 package com.kwetter.profileservice.dal.repository;
 
 import com.kwetter.profileservice.dal.context.DatabaseContext;
+import com.kwetter.profileservice.dal.context.LocalContext;
 import com.kwetter.profileservice.dal.interfaces.AbstractContext;
 import com.kwetter.profileservice.models.returnModels.*;
 import org.springframework.stereotype.Repository;
@@ -10,7 +11,7 @@ public class ProfileRepository {
     private static AbstractContext tweetContext;
 
     public ProfileRepository() {
-        this.tweetContext = new DatabaseContext();
+        this.tweetContext = new LocalContext();
     }
 
     public GetProfileReturnModel getProfile(String profile_name) {
