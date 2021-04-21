@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>murraco</groupId>
-	<artifactId>jwt-auth-service</artifactId>
+	<artifactId>accountservice</artifactId>
 	<version>1.0.0</version>
 	<packaging>jar</packaging>
 
@@ -45,7 +45,7 @@
 		<dependency>
 			<groupId>com.microsoft.sqlserver</groupId>
 			<artifactId>mssql-jdbc</artifactId>
-			<version>9.2.1.jre11</version>
+			<version>9.2.1.jre8</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.springframework.amqp/spring-amqp -->
 		<dependency>
