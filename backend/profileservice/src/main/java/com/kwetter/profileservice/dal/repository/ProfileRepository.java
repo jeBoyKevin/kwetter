@@ -11,7 +11,7 @@ public class ProfileRepository {
     private static AbstractContext tweetContext;
 
     public ProfileRepository() {
-        this.tweetContext = new LocalContext();
+        this.tweetContext = new DatabaseContext();
     }
 
     public GetProfileReturnModel getProfile(String profile_name) {

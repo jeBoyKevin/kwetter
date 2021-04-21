@@ -11,8 +11,17 @@
     <groupId>com.kwetter.profileservice</groupId>
     <artifactId>ProfileService</artifactId>
     <version>0.0.1-SNAPSHOT</version>
+    <packaging>jar</packaging>
     <name>ProfileService</name>
     <description>Demo project for Spring Boot</description>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
     <distributionManagement>
         <repository>
             <id>ProfileServiceBuild</id>
@@ -41,7 +50,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.springframework.amqp/spring-rabbit -->
         <dependency>
@@ -56,14 +64,12 @@
             <artifactId>spring-amqp</artifactId>
             <version>2.3.6</version>
         </dependency>
-
         <dependency>
             <groupId>com.microsoft.sqlserver</groupId>
             <artifactId>mssql-jdbc</artifactId>
-            <version>9.2.1.jre15</version>
+            <version>9.2.1.jre8</version>
         </dependency>
         <dependency>
-
             <groupId>org.jboss.spec.javax.ws.rs</groupId>
             <artifactId>jboss-jaxrs-api_2.1_spec</artifactId>
             <version>2.0.1.Final</version>
@@ -73,31 +79,5 @@
             <artifactId>jackson-core</artifactId>
             <version>2.11.3</version>
         </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>2.11.3</version>
-        </dependency>
     </dependencies>
-    <properties>
-        <start-class>com.kwetter.profileservice.ProfileserviceApplication</start-class>
-    </properties>
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <requiresUnpack>
-                        <dependency>
-                            <groupId>org.jruby</groupId>
-                            <artifactId>jruby-complete</artifactId>
-                        </dependency>
-                    </requiresUnpack>
-                </configuration>
-                <version>2.4.3</version>
-            </plugin>
-        </plugins>
-    </build>
-
 </project>
