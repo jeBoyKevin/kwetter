@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.kwetter.accountservice.dto.UserDataDTO;
 import com.kwetter.accountservice.model.Account;
+import com.kwetter.accountservice.model.SigninReturnObject;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -41,9 +42,9 @@ public class UserController {
   @ApiResponses(value = {//
       @ApiResponse(code = 400, message = "Something went wrong"), //
       @ApiResponse(code = 422, message = "Invalid username/password supplied")})
-  public String login(//
-      @ApiParam("Username") @RequestParam String username, //
-      @ApiParam("Password") @RequestParam String password) {
+  public SigninReturnObject login(//
+                                  @ApiParam("Username") @RequestParam String username, //
+                                  @ApiParam("Password") @RequestParam String password) {
     return userService.signin(username, password);
   }
 

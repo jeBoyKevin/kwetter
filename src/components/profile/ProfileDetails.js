@@ -11,7 +11,8 @@ const useStyles = (theme) => ({
         marginRight: "10%",
         border: "1px solid #000",
         boxSizing: "inherit",
-        padding: "10px"
+        padding: "10px",
+        position: "relative"
     },
     details: {
         float: "left",
@@ -43,6 +44,42 @@ const useStyles = (theme) => ({
         marginBlockEnd: "1em",
         marginInlineStart: "0px",
         marginInlineEnd: "0px"
+    },
+    followButton: {
+        backgroundColor: "#4CAF50",
+        border: "none",
+        color: "white",
+        padding: "15px 32px",
+        textAlign: "center",
+        textDecoration: "none",
+        display: "inline-block",
+        fontSize: "16px",
+        position: "absolute",
+        top: "50%",
+        transform: "translateY(-50%)",
+        right: "25px",
+        '&:hover': {
+            cursor: "pointer",
+            opacity: "0.8"
+        }
+    },
+    UnfollowButton: {
+        backgroundColor: "#fff",
+        border: "1px solid #4CAF50",
+        color: "#4CAF50",
+        padding: "15px 32px",
+        textAlign: "center",
+        textDecoration: "none",
+        display: "inline-block",
+        fontSize: "16px",
+        position: "absolute",
+        top: "50%",
+        transform: "translateY(-50%)",
+        right: "25px",
+        '&:hover': {
+            cursor: "pointer",
+            opacity: "0.8"
+        }
     }
 })
 
@@ -61,13 +98,16 @@ class ProfileDetails extends Component {
             websiteToggle: true,
             errorOpen: false,
             succesOpen: false,
-            errorText: ""
+            errorText: "",
+            succesText: ""
             
         }
         this.toggleInput = this.toggleInput.bind(this)
         this.handleChange = this.handleChange.bind(this)
         this.handleErrorClose = this.handleErrorClose.bind(this)
         this.handleSuccesClose = this.handleSuccesClose.bind(this)
+        this.handleFollow = this.handleFollow.bind(this)
+        this.handleUnfollow = this.handleUnfollow.bind(this)
 
     }
 
@@ -102,9 +142,10 @@ class ProfileDetails extends Component {
         })
         .catch(response => {
             localStorage.removeItem('token');
+            localStorage.removeItem('username');
             return;
         })
-        if (user_id.toString() === this.props.id) {
+        if (user_id === this.props.id) {
             await axios({
                 method: 'PUT',
                 url: `http://localhost:8079/profile/`,
@@ -116,6 +157,7 @@ class ProfileDetails extends Component {
                 }
             });
             this.setState({
+                succesText: "Profile has been updated",
                 succesOpen: true
             })
             }       
@@ -126,6 +168,74 @@ class ProfileDetails extends Component {
             })
         } 
     }
+    async handleFollow() {
+        var user_id = "0";
+        await axios.get("http://localhost:8083/user/me", { headers: { Authorization:  'Bearer ' + localStorage.getItem('token') } 
+        })
+        .then(response => {
+            user_id = response.data.id;
+        })
+        .catch(response => {
+            localStorage.removeItem('token');
+            localStorage.removeItem('username');
+            return;
+        })
+        if (user_id !== this.props.id && user_id !== "0") {
+            await axios({
+                method: 'post',
+                url: `http://localhost:8079/profile/follow`,
+                data: {
+                    user_id: user_id,
+                    followed_user_id: this.props.id
+                }
+            });
+            this.setState({
+                succesText: "You are now following " + this.props.profile_name,
+                succesOpen: true
+            })
+            }       
+        else {
+            this.setState({
+                errorText: "You can not follow your own profile",
+                errorOpen: true
+            })
+        } 
+    }
+
+    async handleUnfollow() {
+        var user_id = "0";
+        await axios.get("http://localhost:8083/user/me", { headers: { Authorization:  'Bearer ' + localStorage.getItem('token') } 
+        })
+        .then(response => {
+            user_id = response.data.id;
+        })
+        .catch(response => {
+            localStorage.removeItem('token');
+            localStorage.removeItem('username');
+            return;
+        })
+        if (user_id !== "0") {
+            await axios({
+                method: 'delete',
+                url: `http://localhost:8079/profile/follow`,
+                data: {
+                    user_id: user_id,
+                    followed_user_id: this.props.id
+                }
+            });
+            this.setState({
+                succesText: "You stopped following " + this.props.profile_name,
+                succesOpen: true
+            })
+            }       
+        else {
+            this.setState({
+                errorText: "You can not unfollow this person",
+                errorOpen: true
+            })
+        } 
+    }
+
     handleErrorClose() {
         this.setState({
             errorOpen: false
@@ -165,6 +275,11 @@ class ProfileDetails extends Component {
                 <div id="summary" className={classes.summary}>
                     <img src={this.state.picture} alt={'picture of ' + this.state.profile_name} className={classes.profilePicture} />
                     <h1 className={classes.h1}>{this.state.profile_name}</h1>
+                    {this.props.followers.includes(localStorage.getItem('username')) ? (
+                        <button onClick={this.handleUnfollow} className={classes.UnfollowButton}>Unfollow</button>
+                    ) : (
+                        <button onClick={this.handleFollow} className={classes.followButton}>Follow</button>
+                    )}
                 </div>
                 <div id="details" className={classes.details}>
                     <p><b>Name:</b> {this.state.profile_name}</p>
@@ -188,7 +303,7 @@ class ProfileDetails extends Component {
                 </div>
                 <Snackbar open={this.state.succesOpen} autoHideDuration={3000} onClose={this.handleSuccesClose}>
                     <Alert onClose={this.handleSuccesClose} severity="success">
-                    Profile has been updated
+                    {this.state.succesText}
                     </Alert>
                 </Snackbar>
                 <Snackbar open={this.state.errorOpen} autoHideDuration={8000} onClose={this.handleErrorClose}>

@@ -98,16 +98,33 @@ public class DatabaseContext extends AbstractContext {
         return returnModel;
     }
 
-    @Override
-    public String followProfile() {
-        return null;
-    }
-
     public SendFollowReturnModel followUser(int user_id, int followed_user_id) {
         SendFollowReturnModel returnModel = new SendFollowReturnModel();
         try (Connection connection = DriverManager.getConnection(connectionUrl)) {
             try {
                 CallableStatement cstmnt = connection.prepareCall("{CALL followUser(?,?)}");
+                cstmnt.setInt(1, user_id);
+                cstmnt.setInt(2, followed_user_id);
+
+                cstmnt.executeUpdate();
+
+                returnModel.setSuccess(true);
+            } catch (SQLException e) {
+                returnModel.setSuccess(false);
+                returnModel.setErrorMessage(e.toString());
+            }
+        } catch (SQLException e) {
+            returnModel.setErrorMessage(e.getMessage());
+            returnModel.setSuccess(false);
+        }
+        return returnModel;
+    }
+
+    public UpdateProfileReturnModel UnfollowUser(int user_id, int followed_user_id) {
+        UpdateProfileReturnModel returnModel = new UpdateProfileReturnModel();
+        try (Connection connection = DriverManager.getConnection(connectionUrl)) {
+            try {
+                CallableStatement cstmnt = connection.prepareCall("{CALL UnfollowUser(?,?)}");
                 cstmnt.setInt(1, user_id);
                 cstmnt.setInt(2, followed_user_id);
 
@@ -219,6 +236,32 @@ public class DatabaseContext extends AbstractContext {
                 cstmnt.setString(1, username);
 
                 cstmnt.executeUpdate();
+
+                returnModel.setSuccess(true);
+            } catch (SQLException e) {
+                returnModel.setSuccess(false);
+                returnModel.setErrorMessage(e.toString());
+            }
+        } catch (SQLException e) {
+            returnModel.setErrorMessage(e.getMessage());
+            returnModel.setSuccess(false);
+        }
+        return returnModel;
+    }
+
+    @Override
+    public getByIdReturnModel getById(int id) {
+        getByIdReturnModel returnModel = new getByIdReturnModel();
+        try (Connection connection = DriverManager.getConnection(connectionUrl)) {
+            try {
+                CallableStatement cstmnt = connection.prepareCall("{CALL getById(?)}");
+                cstmnt.setInt(1, id);
+
+                cstmnt.execute();
+                ResultSet rs = cstmnt.getResultSet();
+                while (rs.next()) {
+                    returnModel.setUsername(rs.getString("profile_name"));
+                }
 
                 returnModel.setSuccess(true);
             } catch (SQLException e) {

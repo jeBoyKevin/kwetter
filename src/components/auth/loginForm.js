@@ -65,9 +65,15 @@ const buttonStyle = {
       password: password,
     })
     .then(response => {
-      localStorage.setItem('token', response.data)
-      handleClose();
-      window.location.replace('');
+      console.log(response)
+      localStorage.setItem('token', response.data.token)
+      var user_id = response.data.user_id
+      axios.get('http://localhost:8079/profile/getById/'+user_id)
+      .then(response => {
+        localStorage.setItem('username', response.data.username)
+        handleClose();
+        window.location.replace('');
+      })
     })
     .catch(error => {
       if (typeof error.response !== "undefined") {
@@ -106,6 +112,7 @@ const buttonStyle = {
           username: username
         })
         .then(response => {
+          localStorage.setItem('username', username)
           handleClose();
           window.location.replace('')
         })

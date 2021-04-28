@@ -11,7 +11,6 @@ public class Manager {
         return profileRepo.getProfile(profile_name);
     }
     public UploadPictureReturnModel uploadPicture(int user_id, String picture) {return profileRepo.uploadPicture(user_id, picture);}
-    public String followProfile() {return profileRepo.followProfile();}
 
     public UpdateProfileReturnModel updateProfile(int user_id, String bio, String location,
                                                   String website) {
@@ -34,5 +33,13 @@ public class Manager {
 
     public UploadPictureReturnModel createProfile(String username) {
         return profileRepo.createProfile(username);
+    }
+
+    public getByIdReturnModel getById(int id) {
+        return profileRepo.getById(id);
+    }
+
+    public UpdateProfileReturnModel UnfollowUser(int user_id, int followed_user_id) {
+        return profileRepo.UnfollowUser(user_id, followed_user_id);
     }
 }

@@ -2,6 +2,7 @@ package com.kwetter.accountservice.service;
 
 import com.kwetter.accountservice.exception.CustomException;
 import com.kwetter.accountservice.model.Account;
+import com.kwetter.accountservice.model.SigninReturnObject;
 import com.kwetter.accountservice.repository.UserRepository;
 import com.kwetter.accountservice.security.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,10 +32,16 @@ public class UserService {
   @Autowired
   private AuthenticationManager authenticationManager;
 
-  public String signin(String username, String password) {
+  public SigninReturnObject signin(String username, String password) {
     try {
       authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
-      return jwtTokenProvider.createToken(username, userRepository.findByUsername(username).getRoles());
+      String token = jwtTokenProvider.createToken(username, userRepository.findByUsername(username).getRoles());
+      int user_id = userRepository.findByUsername(username).getId();
+      SigninReturnObject returnObject = new SigninReturnObject();
+      returnObject.setToken(token);
+      returnObject.setUser_id(user_id);
+
+      return returnObject;
     } catch (AuthenticationException e) {
       throw new CustomException("Invalid username/password supplied", HttpStatus.UNPROCESSABLE_ENTITY);
     }

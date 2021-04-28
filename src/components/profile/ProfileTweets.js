@@ -53,30 +53,18 @@ class ProfileTweets extends Component {
 
     state = {
         tweets: [],
-        followers: [],
-        isloaded: false,
         profileId: 0
     }
 
     async componentDidMount() {
-        const response = await axios({
-            method: 'get',
-            url: `http://localhost:8079/profile/follower/${this.props.profile_name}`
-        })
-        
-        if (response.data.success === true) {
-            this.setState ({
-                followers: response.data.followers,
-                isLoaded: true
-            });
-        }
         const response2 = await axios({
             method: 'get',
             url: `http://localhost:8079/tweet/${this.props.profile_id}`
         })
         if (response2.data.success === true) {
             this.setState({
-                tweets: response2.data.tweets
+                tweets: response2.data.tweets,
+                isLoaded: true
             })
         }
     }
@@ -121,7 +109,7 @@ class ProfileTweets extends Component {
                 <Table id="followerTable" className={classes.followerTable}>
                 
                 <TableBody>
-                {this.state.followers.map((follower, index) =>
+                {this.props.followers.map((follower, index) =>
 
                 <TableRow className={classes.tweet}  key={follower} style ={ index % 2? { background : "#e8e8e8" }:{ background : "white" }}>
                     <TableCell className={classes.tweetCell}>

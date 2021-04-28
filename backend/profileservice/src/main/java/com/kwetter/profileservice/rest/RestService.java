@@ -128,6 +128,28 @@ public class RestService {
         }
     }
 
+    @RequestMapping(value =  "/follow",
+            method = RequestMethod.DELETE,
+            consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity UnfollowUser(@RequestBody String json) throws JsonProcessingException {
+        SendFollowSubmitModel submitModel = objectMapper.readValue(json, SendFollowSubmitModel.class);
+        int user_id = submitModel.getUser_id();
+        int followed_user_id = submitModel.getFollowed_user_id();
+
+        if (user_id == 0 || followed_user_id == 0) {
+            return new ResponseEntity<>("", HttpStatus.BAD_REQUEST);
+        }
+
+        UpdateProfileReturnModel returnModel = manager.UnfollowUser(user_id, followed_user_id);
+
+        if (returnModel.isSuccess()) {
+            return ResponseEntity.status(HttpStatus.OK).body(objectMapper.writeValueAsString(returnModel));
+        }
+        else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(objectMapper.writeValueAsString(returnModel));
+        }
+    }
+
     @RequestMapping(value =  "/follower/{profile_name}", method = RequestMethod.GET)
     public ResponseEntity getFollowers(@PathVariable("profile_name") String profile_name) throws JsonProcessingException {
         if (profile_name.isEmpty()) {
@@ -168,6 +190,21 @@ public class RestService {
         }
 
         GetStatsReturnModel returnModel = manager.getStats(profile_name);
+
+        if (returnModel.isSuccess()) {
+            return ResponseEntity.status(HttpStatus.OK).body(objectMapper.writeValueAsString(returnModel));
+        }
+        else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(objectMapper.writeValueAsString(returnModel));
+        }
+    }
+    @RequestMapping(value =  "/getById/{id}", method = RequestMethod.GET)
+    public ResponseEntity getById(@PathVariable("id") int id) throws JsonProcessingException {
+        if (id == 0) {
+            return new ResponseEntity<>("", HttpStatus.BAD_REQUEST);
+        }
+
+        getByIdReturnModel returnModel = manager.getById(id);
 
         if (returnModel.isSuccess()) {
             return ResponseEntity.status(HttpStatus.OK).body(objectMapper.writeValueAsString(returnModel));

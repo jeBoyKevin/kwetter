@@ -1,7 +1,6 @@
 package com.kwetter.profileservice.dal.repository;
 
 import com.kwetter.profileservice.dal.context.DatabaseContext;
-import com.kwetter.profileservice.dal.context.LocalContext;
 import com.kwetter.profileservice.dal.interfaces.AbstractContext;
 import com.kwetter.profileservice.models.returnModels.*;
 import org.springframework.stereotype.Repository;
@@ -25,9 +24,6 @@ public class ProfileRepository {
     public UploadPictureReturnModel uploadPicture(int user_id, String picture) {
         return tweetContext.uploadPicture(user_id, picture);
     }
-    public String followProfile() {
-        return tweetContext.followProfile();
-    }
 
     public SendFollowReturnModel followUser(int user_id, int followed_user_id) {
         return tweetContext.followUser(user_id, followed_user_id);
@@ -45,5 +41,13 @@ public class ProfileRepository {
 
     public UploadPictureReturnModel createProfile(String username) {
         return tweetContext.createProfile(username);
+    }
+
+    public getByIdReturnModel getById(int id) {
+        return tweetContext.getById(id);
+    }
+
+    public UpdateProfileReturnModel UnfollowUser(int user_id, int followed_user_id) {
+        return tweetContext.UnfollowUser(user_id, followed_user_id);
     }
 }
