@@ -1,9 +1,12 @@
 package com.kwetter.profileservice.manager;
 
+import com.kwetter.profileservice.rabbit.Sender;
 import com.kwetter.profileservice.dal.repository.ProfileRepository;
 import com.kwetter.profileservice.models.returnModels.*;
 
 public class Manager {
+
+    private Sender sender = new Sender();
 
     private ProfileRepository profileRepo = new ProfileRepository();
 
@@ -18,6 +21,11 @@ public class Manager {
     }
 
     public SendFollowReturnModel followUser(int user_id, int followed_user_id) {
+        try {
+            sender.send(followed_user_id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return profileRepo.followUser(user_id, followed_user_id);
     }
 
