@@ -135,14 +135,14 @@ class ProfileDetails extends Component {
 
     async changeProfile (e) {
         var user_id = "0";
-        await axios.get("http://localhost:8083/user/me", { headers: { Authorization:  'Bearer ' + localStorage.getItem('token') } 
+        await axios.get("http://localhost:8083/user/me", { headers: { Authorization:  'Bearer ' + sessionStorage.getItem('token') } 
         })
         .then(response => {
             user_id = response.data.id;
         })
         .catch(response => {
-            localStorage.removeItem('token');
-            localStorage.removeItem('username');
+            sessionStorage.removeItem('token');
+            sessionStorage.removeItem('username');
             return;
         })
         if (user_id === this.props.id) {
@@ -170,14 +170,14 @@ class ProfileDetails extends Component {
     }
     async handleFollow() {
         var user_id = "0";
-        await axios.get("http://localhost:8083/user/me", { headers: { Authorization:  'Bearer ' + localStorage.getItem('token') } 
+        await axios.get("http://localhost:8083/user/me", { headers: { Authorization:  'Bearer ' + sessionStorage.getItem('token') } 
         })
         .then(response => {
             user_id = response.data.id;
         })
         .catch(response => {
-            localStorage.removeItem('token');
-            localStorage.removeItem('username');
+            sessionStorage.removeItem('token');
+            sessionStorage.removeItem('username');
             return;
         })
         if (user_id !== this.props.id && user_id !== "0") {
@@ -204,14 +204,14 @@ class ProfileDetails extends Component {
 
     async handleUnfollow() {
         var user_id = "0";
-        await axios.get("http://localhost:8083/user/me", { headers: { Authorization:  'Bearer ' + localStorage.getItem('token') } 
+        await axios.get("http://localhost:8083/user/me", { headers: { Authorization:  'Bearer ' + sessionStorage.getItem('token') } 
         })
         .then(response => {
             user_id = response.data.id;
         })
         .catch(response => {
-            localStorage.removeItem('token');
-            localStorage.removeItem('username');
+            sessionStorage.removeItem('token');
+            sessionStorage.removeItem('username');
             return;
         })
         if (user_id !== "0") {
@@ -275,7 +275,7 @@ class ProfileDetails extends Component {
                 <div id="summary" className={classes.summary}>
                     <img src={this.state.picture} alt={'picture of ' + this.state.profile_name} className={classes.profilePicture} />
                     <h1 className={classes.h1}>{this.state.profile_name}</h1>
-                    {this.props.followers.includes(localStorage.getItem('username')) ? (
+                    {this.props.followers.includes(sessionStorage.getItem('username')) ? (
                         <button onClick={this.handleUnfollow} className={classes.UnfollowButton}>Unfollow</button>
                     ) : (
                         <button onClick={this.handleFollow} className={classes.followButton}>Follow</button>

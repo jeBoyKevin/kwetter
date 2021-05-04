@@ -12,8 +12,8 @@ const buttonStyle = {
 
 export default function FormDialog() {
     const handleLogout = () => {
-        localStorage.removeItem('token');
-        localStorage.removeItem('username')
+        sessionStorage.removeItem('token');
+        sessionStorage.removeItem('username')
         window.location.replace('');
     }
     

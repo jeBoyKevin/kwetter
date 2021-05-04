@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {withStyles } from '@material-ui/core';
 import LoginForm from "../auth/loginForm";
 import LogoutForm from "../auth/logoutForm";
+import ProfileMenu from "../main/ProfileMenu";
 
 
 const useStyles = (theme) => ({
@@ -25,8 +26,12 @@ class Banner extends Component {
         const { classes } = this.props;
         return <div id="banner" className={classes.banner}>
             <p className={classes.pstyle}>Welcome to Kwetter</p>
-            {localStorage.getItem('token') ? (
+            {sessionStorage.getItem('token') ? (
+                <div>
+
                 <LogoutForm ></LogoutForm>
+                <ProfileMenu></ProfileMenu>
+                </div>
             ) : (
                 <LoginForm></LoginForm>
             )}

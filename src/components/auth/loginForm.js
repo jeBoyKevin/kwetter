@@ -66,13 +66,13 @@ const buttonStyle = {
     })
     .then(response => {
       console.log(response)
-      localStorage.setItem('token', response.data.token)
+      sessionStorage.setItem('token', response.data.token)
       var user_id = response.data.user_id
       axios.get('http://localhost:8079/profile/getById/'+user_id)
       .then(response => {
-        localStorage.setItem('username', response.data.username)
+        sessionStorage.setItem('username', response.data.username)
         handleClose();
-        window.location.replace('');
+        window.location.replace('/main');
       })
     })
     .catch(error => {
@@ -104,7 +104,7 @@ const buttonStyle = {
       ]
     })
     .then(response => {
-      localStorage.setItem('token', response.data)
+      sessionStorage.setItem('token', response.data)
       console.log(response.status)
       if (response.status === 200)
       {
@@ -112,9 +112,9 @@ const buttonStyle = {
           username: username
         })
         .then(response => {
-          localStorage.setItem('username', username)
+          sessionStorage.setItem('username', username)
           handleClose();
-          window.location.replace('')
+          window.location.replace('/main')
         })
         .catch(error => {
           setError({warning: error.response.data.error})

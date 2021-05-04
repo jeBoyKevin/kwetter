@@ -66,13 +66,13 @@ class SendTweetComponent extends Component {
     async handleTweet (e)  {
     var user_id = 0;
     e.preventDefault();
-    await axios.get("http://localhost:8083/user/me", { headers: { Authorization:  'Bearer ' + localStorage.getItem('token') } 
+    await axios.get("http://localhost:8083/user/me", { headers: { Authorization:  'Bearer ' + sessionStorage.getItem('token') } 
     })
     .then(response => {
         user_id = response.data.id;
     })
     .catch(error => {
-        localStorage.removeItem('token')
+        sessionStorage.removeItem('token')
         this.setState({warning: "You do not have the permissions to send this tweet"})
         this.handleErrorOpen();
         return;
