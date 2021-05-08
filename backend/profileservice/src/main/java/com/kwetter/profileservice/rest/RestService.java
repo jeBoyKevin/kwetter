@@ -52,11 +52,13 @@ public class RestService {
 
         String username = submitModel.getUsername();
 
-        if (username.isEmpty()) {
+        int user_id = submitModel.getUser_id();
+
+        if (username.isEmpty() || user_id == 0) {
             return new ResponseEntity<>("", HttpStatus.BAD_REQUEST);
         }
 
-        UploadPictureReturnModel returnModel = manager.createProfile(username);
+        UploadPictureReturnModel returnModel = manager.createProfile(username, user_id);
         if (returnModel.isSuccess()) {
             return ResponseEntity.status(HttpStatus.OK).body(objectMapper.writeValueAsString(returnModel));
         }

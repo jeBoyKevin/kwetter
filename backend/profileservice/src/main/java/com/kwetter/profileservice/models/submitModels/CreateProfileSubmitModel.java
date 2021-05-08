@@ -2,6 +2,7 @@ package com.kwetter.profileservice.models.submitModels;
 
 public class CreateProfileSubmitModel {
     private String username;
+    private int user_id;
 
     public String getUsername() {
         return username;
@@ -9,5 +10,14 @@ public class CreateProfileSubmitModel {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+
+    public int getUser_id() {
+        return user_id;
+    }
+
+    public void setUser_id(int user_id) {
+        this.user_id = user_id;
     }
 }

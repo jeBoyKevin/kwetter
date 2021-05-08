@@ -228,12 +228,13 @@ public class DatabaseContext extends AbstractContext {
     }
 
     @Override
-    public UploadPictureReturnModel createProfile(String username) {
+    public UploadPictureReturnModel createProfile(String username, int user_id) {
         UploadPictureReturnModel returnModel = new UploadPictureReturnModel();
         try (Connection connection = DriverManager.getConnection(connectionUrl)) {
             try {
-                CallableStatement cstmnt = connection.prepareCall("{CALL createProfile(?)}");
+                CallableStatement cstmnt = connection.prepareCall("{CALL createProfile(?,?)}");
                 cstmnt.setString(1, username);
+                cstmnt.setInt(2, user_id);
 
                 cstmnt.executeUpdate();
 

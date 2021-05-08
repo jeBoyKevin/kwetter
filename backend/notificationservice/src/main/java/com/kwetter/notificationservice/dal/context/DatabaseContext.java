@@ -4,6 +4,7 @@ package com.kwetter.notificationservice.dal.context;
 import com.kwetter.notificationservice.dal.interfaces.AbstractContext;
 import com.kwetter.notificationservice.models.Notification;
 import com.kwetter.notificationservice.models.returnModels.GetNotificationsReturnModel;
+import com.kwetter.notificationservice.models.returnModels.SetReadNotificationsReturnModel;
 
 import java.sql.*;
 
@@ -61,5 +62,27 @@ public class DatabaseContext extends AbstractContext {
         } catch (SQLException e) {
             System.out.println(e);
         }
+    }
+
+    @Override
+    public SetReadNotificationsReturnModel readNotifications(int user_id) {
+        SetReadNotificationsReturnModel returnModel = new SetReadNotificationsReturnModel();
+        try (Connection connection = DriverManager.getConnection(connectionUrl)) {
+            try {
+                CallableStatement cstmnt = connection.prepareCall("{CALL readNotifications(?)}");
+                cstmnt.setInt(1, user_id);
+
+                cstmnt.executeUpdate();
+
+                returnModel.setSuccess(true);
+            } catch (SQLException e) {
+                returnModel.setSuccess(false);
+                returnModel.setErrorMessage(e.toString());
+            }
+        } catch (SQLException e) {
+            returnModel.setErrorMessage(e.getMessage());
+            returnModel.setSuccess(false);
+        }
+        return returnModel;
     }
 }

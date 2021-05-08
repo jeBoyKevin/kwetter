@@ -104,12 +104,14 @@ const buttonStyle = {
       ]
     })
     .then(response => {
-      sessionStorage.setItem('token', response.data)
+      sessionStorage.setItem('token', response.data.token)
+      var user_id = response.data.user_id
       console.log(response.status)
       if (response.status === 200)
       {
         axios.post('http://localhost:8079/profile', {
-          username: username
+          username: username,
+          user_id: user_id
         })
         .then(response => {
           sessionStorage.setItem('username', username)

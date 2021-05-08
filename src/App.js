@@ -12,7 +12,7 @@ function App() {
       <Router>
       <Route path="/main"
         render={() =>
-            localStorage.getItem('token') ? (
+            sessionStorage.getItem('token') ? (
                 <MainPage></MainPage>
             ) : (
                     console.log("Not logged in")

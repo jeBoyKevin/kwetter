@@ -14,12 +14,19 @@ const buttonStyle = {
     right: "200px"
 }
 
+const alertStyle = {
+    float: "right",
+    marginRight: "150px",
+    marginTop: "25px"
+}
+
 
 
 export default function FormDialog() {
     const [open, setOpen] = React.useState(false);
 
     const [Notifications, setNotifications] = useState([]);
+    const [amountofNots, setAmountofNots] = useState(0);
  
     useEffect(() => {
         async function fetchData() {
@@ -34,7 +41,7 @@ export default function FormDialog() {
             sessionStorage.removeItem('username')
             return;
         })
-        axios.get('http://localhost:8079/notification/' + user_id, {
+        await axios.get('http://localhost:8079/notification/' + user_id, {
         })
         .then(response => {
             Notifications.length = 0
@@ -42,7 +49,7 @@ export default function FormDialog() {
                 Notifications.push(response.data.notifications[i]);
                 setNotifications(Notifications)
             }
-            console.log(Notifications)
+            setAmountofNots(Notifications.length)
         })
         .catch(error => {
             return;
@@ -51,13 +58,38 @@ export default function FormDialog() {
         fetchData();
       }, []); 
 
+    async function clearNotifications() {
+        setAmountofNots(0);
+        setNotifications([])
+        var user_id = 0
+          await axios.get("http://localhost:8083/user/me", { headers: { Authorization:  'Bearer ' + sessionStorage.getItem('token') } 
+        })
+        .then(response => {
+            user_id = response.data.id;
+        })
+        .catch(error => {
+            sessionStorage.removeItem('token')
+            sessionStorage.removeItem('username')
+            return;
+        })
+        await axios.put('http://localhost:8079/notification/' + user_id, {
+        })
+        .then(response => {
+            
+        })
+        .catch(error => {
+            return;
+          })
+        }
+
+
     
   return (
     <div>
-        <Badge style={buttonStyle} color="primary" badgeContent={Notifications.length}>
+        <Badge style={buttonStyle} color="primary" badgeContent={amountofNots}>
             <Avatar aria-controls="simple-menu" aria-haspopup="true" onClick={() => {
                     setOpen(true);
-                }} src="./resources/images/bell.png"></Avatar>
+                }} src="../images/bell.png"></Avatar>
         </Badge>
 
           
@@ -65,7 +97,8 @@ export default function FormDialog() {
             
         {Notifications.map((notification, index) =>
             <Collapse in={open}>
-            <Alert severity="info"
+            <Alert style ={alertStyle}
+            severity="info"
             action={
                 <IconButton
                 aria-label="close"
@@ -73,16 +106,39 @@ export default function FormDialog() {
                 size="small"
                 onClick={() => {
                     setOpen(false);
+                    clearNotifications();
                 }}
                 >
                 <CloseIcon fontSize="inherit" />
                 </IconButton>
             }
+        
             >
             {notification.message}
             </Alert>
         </Collapse>
         )}
+        {Notifications.length > 0 ? console.log("Reading notifications..") :  <Collapse in={open}>
+            <Alert severity="info"
+            style = {alertStyle}
+            action={
+                <IconButton
+                aria-label="close"
+                color="inherit"
+                size="small"
+                onClick={() => {
+                    setOpen(false);
+                    clearNotifications();
+                }}
+                >
+                <CloseIcon fontSize="inherit" />
+                </IconButton>
+            }
+        
+            >
+            You have no new notifications at this time
+            </Alert>
+        </Collapse>}
         
         </div>
     </div>

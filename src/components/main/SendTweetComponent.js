@@ -86,8 +86,7 @@ class SendTweetComponent extends Component {
         this.setState({
           tweet: ""
         })
-    }
-    )
+    })
     .catch(error => {
         this.setState({warning: "You do not have the permissions to send this tweet"})
         this.handleErrorOpen();

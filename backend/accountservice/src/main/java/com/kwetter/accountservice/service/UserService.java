@@ -47,11 +47,16 @@ public class UserService {
     }
   }
 
-  public String signup(Account account) {
+  public SigninReturnObject signup(Account account) {
     if (!userRepository.existsByUsername(account.getUsername())) {
       account.setPassword(passwordEncoder.encode(account.getPassword()));
       userRepository.save(account);
-      return jwtTokenProvider.createToken(account.getUsername(), account.getRoles());
+      String token = jwtTokenProvider.createToken(account.getUsername(), account.getRoles());
+      int user_id = userRepository.findByUsername(account.getUsername()).getId();
+      SigninReturnObject returnObject = new SigninReturnObject();
+      returnObject.setToken(token);
+      returnObject.setUser_id(user_id);
+      return returnObject;
     } else {
       throw new CustomException("Username is already in use", HttpStatus.UNPROCESSABLE_ENTITY);
     }
