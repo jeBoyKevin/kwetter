@@ -1,6 +1,7 @@
 package com.kwetter.tweetservice.dal.repository;
 
 import com.kwetter.tweetservice.dal.context.TweetDatabaseContext;
+import com.kwetter.tweetservice.dal.context.TweetTestContext;
 import com.kwetter.tweetservice.dal.interfaces.AbstractTweetContext;
 import com.kwetter.tweetservice.models.returnModels.GetTweetsFromReturnModel;
 import com.kwetter.tweetservice.models.returnModels.SendTweetReturnModel;
@@ -13,6 +14,10 @@ public class TweetRepository {
 
     public TweetRepository() {
         this.tweetContext = new TweetDatabaseContext();
+    }
+
+    public TweetRepository(boolean test) {
+        this.tweetContext = new TweetTestContext();
     }
 
     public SendTweetReturnModel sendTweet(int user_id, String message) {
