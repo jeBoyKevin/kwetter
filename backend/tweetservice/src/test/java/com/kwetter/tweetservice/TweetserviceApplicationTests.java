@@ -72,38 +72,38 @@ class TweetserviceApplicationTests {
         assertEquals(expected, actual);
     }
 
-    @Test
-    void testGetMentions() {
-        String returnModel = tweetRepository.getMentions();
-
-        String expected = "";
-
-        String actual = returnModel;
-
-        assertEquals(expected, actual);
-    }
-
-    @Test
-    void testLikeTweet() {
-        String returnModel = tweetRepository.likeTweet();
-
-        String expected = "";
-
-        String actual = returnModel;
-
-        assertEquals(expected, actual);
-    }
-
-    @Test
-    void testGetTweets() {
-        String returnModel = tweetRepository.getTweets();
-
-        String expected = "";
-
-        String actual = returnModel;
-
-        assertEquals(expected, actual);
-    }
+//    @Test
+//    void testGetMentions() {
+//        String returnModel = tweetRepository.getMentions();
+//
+//        String expected = "";
+//
+//        String actual = returnModel;
+//
+//        assertEquals(expected, actual);
+//    }
+//
+//    @Test
+//    void testLikeTweet() {
+//        String returnModel = tweetRepository.likeTweet();
+//
+//        String expected = "";
+//
+//        String actual = returnModel;
+//
+//        assertEquals(expected, actual);
+//    }
+//
+//    @Test
+//    void testGetTweets() {
+//        String returnModel = tweetRepository.getTweets();
+//
+//        String expected = "";
+//
+//        String actual = returnModel;
+//
+//        assertEquals(expected, actual);
+//    }
 
 
 
