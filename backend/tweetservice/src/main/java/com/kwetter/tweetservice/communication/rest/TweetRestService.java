@@ -22,7 +22,7 @@ public class TweetRestService {
 
     private ObjectMapper objectMapper = new ObjectMapper();
 
-    @RequestMapping(value =  "",
+    @RequestMapping(value =  "/tweet",
                     method = RequestMethod.POST,
                     consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity sendTweet(@RequestBody String json) throws JsonProcessingException {
@@ -47,7 +47,7 @@ public class TweetRestService {
                 .body(objectMapper.writeValueAsString(manager.getTweets()));
     }
 
-    @RequestMapping(value =  "/{tweet_id}", method = RequestMethod.DELETE)
+    @RequestMapping(value =  "/tweet/{tweet_id}", method = RequestMethod.DELETE)
     public ResponseEntity deleteTweet(@PathVariable("tweet_id") int tweet_id) throws JsonProcessingException {
         if (tweet_id == 0) {
             return new ResponseEntity<>("", HttpStatus.BAD_REQUEST);
@@ -75,7 +75,7 @@ public class TweetRestService {
                 .body(objectMapper.writeValueAsString(manager.getMentions()));
     }
 
-    @RequestMapping(value = "/{user_id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/tweet/{user_id}", method = RequestMethod.GET)
     public ResponseEntity getTweetsFromUser(@PathVariable("user_id") int user_id) throws JsonProcessingException {
         if (user_id == 0) {
             return new ResponseEntity<>("", HttpStatus.BAD_REQUEST);
