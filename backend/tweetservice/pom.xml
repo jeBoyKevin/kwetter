@@ -42,7 +42,7 @@
     </parent>
     <groupId>com.kwetter</groupId>
     <artifactId>tweetservice</artifactId>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
     <name>tweetservice</name>
     <description>Tweet servcie for Kwetter</description>
     <dependencies>
