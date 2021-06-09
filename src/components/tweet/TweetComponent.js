@@ -61,7 +61,7 @@ class TweetComponent extends Component {
     }
     async handleDelete() {
         var user_id = "0";
-        await axios.get("http://localhost:8083/user/me", { headers: { Authorization:  'Bearer ' + localStorage.getItem('token') } 
+        await axios.get("https://kwetter-accountservice.azurewebsites.net/user/me", { headers: { Authorization:  'Bearer ' + localStorage.getItem('token') } 
         })
         .then(response => {
             user_id = response.data.id;
@@ -73,7 +73,7 @@ class TweetComponent extends Component {
         if (user_id === this.props.user_id) {
             await axios({
                 method: 'DELETE',
-                url: `http://localhost:8079/tweet/${this.props.tweet_id}`,
+                url: `https://kwetter-gateway1.azurewebsites.net/tweet/${this.props.tweet_id}`,
             });
             window.location.replace('');
             }       

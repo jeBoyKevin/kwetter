@@ -66,7 +66,7 @@ class SendTweetComponent extends Component {
     async handleTweet (e)  {
     var user_id = 0;
     e.preventDefault();
-    await axios.get("http://localhost:8083/user/me", { headers: { Authorization:  'Bearer ' + sessionStorage.getItem('token') } 
+    await axios.get("https://kwetter-accountservice.azurewebsites.net/user/me", { headers: { Authorization:  'Bearer ' + sessionStorage.getItem('token') } 
     })
     .then(response => {
         user_id = response.data.id;
@@ -77,7 +77,7 @@ class SendTweetComponent extends Component {
         this.handleErrorOpen();
         return;
     })
-    axios.post('http://localhost:8079/tweet', {
+    axios.post('https://kwetter-gateway1.azurewebsites.net/tweet', {
       user_id: user_id,
       message: this.state.tweet
     })

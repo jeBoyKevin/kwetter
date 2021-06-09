@@ -32,7 +32,7 @@ class ProfilePage extends Component {
     async componentDidMount() {
         const response = await axios({
             method: 'get',
-            url: `http://localhost:8079/profile/${this.props.match.params.id}`
+            url: `https://kwetter-gateway1.azurewebsites.net/profile/${this.props.match.params.id}`
         })
         
         if (response.data.success === true) {
@@ -46,7 +46,7 @@ class ProfilePage extends Component {
         }
         const response2 = await axios({
             method: 'get',
-            url: `http://localhost:8079/profile/follower/${this.props.match.params.id}`
+            url: `https://kwetter-gateway1.azurewebsites.net/profile/follower/${this.props.match.params.id}`
         })
         
         if (response2.data.success === true) {
