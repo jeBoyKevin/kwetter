@@ -39,5 +39,4 @@ public class Sender {
         rabbitTemplate.convertAndSend("notification", objectMapper.writeValueAsString(submitModel));
         System.out.println(" [x] Sent new follow message");
     }
-
 }

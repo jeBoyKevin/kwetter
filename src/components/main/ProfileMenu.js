@@ -31,7 +31,7 @@ export default function FormDialog() {
     useEffect(() => {
         async function fetchData() {
           var user_id = 0
-          await axios.get("https://kwetter-accountservice.azurewebsites.net/user/me", { headers: { Authorization:  'Bearer ' + sessionStorage.getItem('token') } 
+          await axios.get("http://20.82.26.234/user/me", { headers: { Authorization:  'Bearer ' + sessionStorage.getItem('token') } 
         })
         .then(response => {
             user_id = response.data.id;
@@ -41,7 +41,7 @@ export default function FormDialog() {
             sessionStorage.removeItem('username')
             return;
         })
-        await axios.get('https://kwetter-gateway1.azurewebsites.net/notification/' + user_id, {
+        await axios.get('http://20.93.216.178/notification/' + user_id, {
         })
         .then(response => {
             Notifications.length = 0
@@ -62,7 +62,7 @@ export default function FormDialog() {
         setAmountofNots(0);
         setNotifications([])
         var user_id = 0
-          await axios.get("https://kwetter-accountservice.azurewebsites.net/user/me", { headers: { Authorization:  'Bearer ' + sessionStorage.getItem('token') } 
+          await axios.get("http://20.82.26.234/user/me", { headers: { Authorization:  'Bearer ' + sessionStorage.getItem('token') } 
         })
         .then(response => {
             user_id = response.data.id;
@@ -72,7 +72,7 @@ export default function FormDialog() {
             sessionStorage.removeItem('username')
             return;
         })
-        await axios.put('https://kwetter-gateway1.azurewebsites.net/notification/' + user_id, {
+        await axios.put('http://20.93.216.178/notification/' + user_id, {
         })
         .then(response => {
             

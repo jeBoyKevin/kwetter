@@ -1,12 +1,12 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: profileservice
+  name: tweetservice
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: profileservice
+      app: tweetservice
   strategy:
     rollingUpdate:
       maxSurge: 1
@@ -15,15 +15,15 @@ spec:
   template:
     metadata:
       labels:
-        app: profileservice
+        app: tweetservice
     spec:
       nodeSelector:
         "beta.kubernetes.io/os": linux
       containers:
-      - name: profileservice
-        image: mykwetterdockeracr.azurecr.io/profileservice:v1
+      - name: tweetservice
+        image: mykwetterdockeracr.azurecr.io/tweetservice:v1
         ports:
-        - containerPort: 8080
+        - containerPort: 8082
         resources:
           requests:
             cpu: 250m
@@ -33,11 +33,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: profileservice
+  name: tweetservice
 spec:
   type: LoadBalancer
   ports:
   - port: 80
-    targetPort: 8080
+    targetPort: 8082
   selector:
-    app: profileservice
+    app: tweetservice

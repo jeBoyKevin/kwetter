@@ -135,7 +135,7 @@ class ProfileDetails extends Component {
 
     async changeProfile (e) {
         var user_id = "0";
-        await axios.get("https://kwetter-accountservice.azurewebsites.net/user/me", { headers: { Authorization:  'Bearer ' + sessionStorage.getItem('token') } 
+        await axios.get("http://20.82.26.234/user/me", { headers: { Authorization:  'Bearer ' + sessionStorage.getItem('token') } 
         })
         .then(response => {
             user_id = response.data.id;
@@ -148,7 +148,7 @@ class ProfileDetails extends Component {
         if (user_id === this.props.id) {
             await axios({
                 method: 'PUT',
-                url: `https://kwetter-gateway1.azurewebsites.net/profile`,
+                url: `http://20.93.216.178/profile`,
                 data: {
                     user_id: user_id,
                     website: this.state.website,
@@ -170,7 +170,7 @@ class ProfileDetails extends Component {
     }
     async handleFollow() {
         var user_id = "0";
-        await axios.get("https://kwetter-accountservice.azurewebsites.net/user/me", { headers: { Authorization:  'Bearer ' + sessionStorage.getItem('token') } 
+        await axios.get("http://20.82.26.234/user/me", { headers: { Authorization:  'Bearer ' + sessionStorage.getItem('token') } 
         })
         .then(response => {
             user_id = response.data.id;
@@ -183,7 +183,7 @@ class ProfileDetails extends Component {
         if (user_id !== this.props.id && user_id !== "0") {
             await axios({
                 method: 'post',
-                url: `https://kwetter-gateway1.azurewebsites.net/profile/follow`,
+                url: `http://20.93.216.178/profile/follow`,
                 data: {
                     user_id: user_id,
                     followed_user_id: this.props.id
@@ -204,7 +204,7 @@ class ProfileDetails extends Component {
 
     async handleUnfollow() {
         var user_id = "0";
-        await axios.get("https://kwetter-accountservice.azurewebsites.net/user/me", { headers: { Authorization:  'Bearer ' + sessionStorage.getItem('token') } 
+        await axios.get("http://20.82.26.234/user/me", { headers: { Authorization:  'Bearer ' + sessionStorage.getItem('token') } 
         })
         .then(response => {
             user_id = response.data.id;
@@ -217,7 +217,7 @@ class ProfileDetails extends Component {
         if (user_id !== "0") {
             await axios({
                 method: 'delete',
-                url: `https://kwetter-gateway1.azurewebsites.net/profile/follow`,
+                url: `http://20.93.216.178/profile/follow`,
                 data: {
                     user_id: user_id,
                     followed_user_id: this.props.id

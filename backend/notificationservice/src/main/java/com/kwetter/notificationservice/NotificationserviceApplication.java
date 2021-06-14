@@ -60,8 +60,6 @@ public class NotificationserviceApplication {
 		container.setQueueNames("notification");
 		container.start();
 
-		//Send a message
-
 	}
 
 }

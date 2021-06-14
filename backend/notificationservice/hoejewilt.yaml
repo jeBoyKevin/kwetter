@@ -1,12 +1,12 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: profileservice
+  name: notificationservice
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: profileservice
+      app: notificationservice
   strategy:
     rollingUpdate:
       maxSurge: 1
@@ -15,15 +15,15 @@ spec:
   template:
     metadata:
       labels:
-        app: profileservice
+        app: notificationservice
     spec:
       nodeSelector:
         "beta.kubernetes.io/os": linux
       containers:
-      - name: profileservice
-        image: mykwetterdockeracr.azurecr.io/profileservice:v1
+      - name: notificationservice
+        image: mykwetterdockeracr.azurecr.io/notificationservice
         ports:
-        - containerPort: 8080
+        - containerPort: 8081
         resources:
           requests:
             cpu: 250m
@@ -33,11 +33,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: profileservice
+  name: notificationservice
 spec:
   type: LoadBalancer
   ports:
   - port: 80
-    targetPort: 8080
+    targetPort: 8081
   selector:
-    app: profileservice
+    app: notificationservice

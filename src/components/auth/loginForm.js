@@ -60,7 +60,7 @@ const buttonStyle = {
     e.preventDefault();
     const {password, email } = details;
 
-    axios.post('https://kwetter-accountservice.azurewebsites.net/user/signin?&username=' + email +"&password=" + password, {
+    axios.post('http://20.82.26.234/user/signin?&username=' + email +"&password=" + password, {
       username: email,
       password: password,
     })
@@ -68,7 +68,7 @@ const buttonStyle = {
       console.log(response)
       sessionStorage.setItem('token', response.data.token)
       var user_id = response.data.user_id
-      axios.get('https://kwetter-gateway1.azurewebsites.net/profile/getById/'+user_id)
+      axios.get('http://20.93.216.178/profile/getById/'+user_id)
       .then(response => {
         sessionStorage.setItem('username', response.data.username)
         handleClose();
@@ -96,7 +96,7 @@ const buttonStyle = {
       handleErrorOpen();
       return;
     }
-    await axios.post('https://kwetter-accountservice.azurewebsites.net/user/signup', {
+    await axios.post('http://20.82.26.234/user/signup', {
       username: email,
       password: password,
       roles: [
@@ -109,7 +109,7 @@ const buttonStyle = {
       console.log(response.status)
       if (response.status === 200)
       {
-        axios.post('https://kwetter-gateway1.azurewebsites.net/profile', {
+        axios.post('http://20.93.216.178/profile', {
           username: username,
           user_id: user_id
         })

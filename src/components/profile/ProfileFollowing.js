@@ -38,7 +38,7 @@ class ProfileFollowing extends Component {
     async componentDidMount() {
         const response = await axios({
             method: 'get',
-            url: `https://kwetter-gateway1.azurewebsites.net/profile/followed/${this.props.profile_name}`
+            url: `http://20.93.216.178/profile/followed/${this.props.profile_name}`
         })
         
         if (response.data.success === true) {

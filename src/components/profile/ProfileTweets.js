@@ -59,7 +59,7 @@ class ProfileTweets extends Component {
     async componentDidMount() {
         const response2 = await axios({
             method: 'get',
-            url: `https://kwetter-gateway1.azurewebsites.net/tweet/${this.props.profile_id}`
+            url: `http://20.93.216.178/tweet/${this.props.profile_id}`
         })
         if (response2.data.success === true) {
             this.setState({
