@@ -61,13 +61,13 @@ class TweetComponent extends Component {
     }
     async handleDelete() {
         var user_id = "0";
-        await axios.get("http://20.82.26.234/user/me", { headers: { Authorization:  'Bearer ' + localStorage.getItem('token') } 
+        await axios.get("http://20.82.26.234/user/me", { headers: { Authorization:  'Bearer ' + sessionStorage.getItem('token') } 
         })
         .then(response => {
             user_id = response.data.id;
         })
         .catch(response => {
-            localStorage.removeItem('token');
+            sessionStorage.removeItem('token');
             return;
         })
         if (user_id === this.props.user_id) {
