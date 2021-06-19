@@ -1,12 +1,12 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: accountservice
+  name: react-app
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: accountservice
+      app: react-app
   strategy:
     rollingUpdate:
       maxSurge: 1
@@ -15,15 +15,15 @@ spec:
   template:
     metadata:
       labels:
-        app: accountservice
+        app: react-app
     spec:
       nodeSelector:
         "beta.kubernetes.io/os": linux
       containers:
-      - name: accountservice
-        image: mykwetterdockeracr.azurecr.io/accountservice:v2
+      - name: react-app
+        image: mykwetterdockeracr.azurecr.io/react-app:latest
         ports:
-        - containerPort: 8083
+        - containerPort: 3000
         resources:
           requests:
             cpu: 250m
@@ -33,11 +33,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: accountservice
+  name: react-app
 spec:
   type: LoadBalancer
   ports:
   - port: 80
-    targetPort: 8083
+    nodePort: 31000
   selector:
-    app: accountservice
+    app: react-app
